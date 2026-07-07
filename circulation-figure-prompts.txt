@@ -1,0 +1,102 @@
+CIRCULATION: CUPPING, COLOUR, AND COLLECTIVE SENSING
+Figure Generation Prompts for ChatGPT Image Creation
+─────────────────────────────────────────────────────────────────────────────
+
+NOTE ON DEVICE FORM
+The cupping device is a dome or bell shape — rounded and closed at the top,
+with the circular opening facing DOWNWARD toward the palm. It sits in the hand
+like an upside-down bowl: dome facing up, hollow interior facing the skin.
+The LED ring glows from the rim at the bottom opening edge.
+All figure prompts reflect this orientation.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 1 — Device Concept Sketch
+(Style: pencil + watercolour concept illustration, white background)
+─────────────────────────────────────────────────────────────────────────────
+
+Detailed pencil and light watercolour concept sketch of a handheld sensing device inspired by a cupping therapy cup (부항). The form is a smooth dome or bell shape: rounded and closed at the top, with the circular opening facing DOWNWARD toward the palm. The device sits in a cupped hand with the dome facing up and the hollow interior facing the skin. Think of holding an upside-down bowl or a traditional glass cupping cup in your palm — the open end is at the bottom, resting against the hand. A ring of soft LED light glows from inside the rim at the bottom opening edge. A small circular pulse sensor (PPG) is visible on the inner concave surface. Technical annotation lines label: LED ring (at rim), pressure sensor (FSR, inner base), pulse sensor (MAX30102, inner surface), ESP32 board (inside dome), battery. The hand grips the dome from the sides with fingers wrapping around the curved exterior. Style: architectural concept sketch, clean white background, fine ink linework with soft watercolour fill, professional HCI conference paper illustration quality.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 2 — Five Colour States (오행 Panel)
+(Style: product photography, five-panel comparison)
+─────────────────────────────────────────────────────────────────────────────
+
+Five-panel product photography of identical cupping-form handheld devices, each glowing a different colour from an internal LED ring at the rim. The device form is a smooth dome — rounded closed top facing up, circular opening facing DOWN toward the palm — held in a single hand in each panel. The LED glow radiates upward from the bottom rim edge, illuminating the hand from below. Left to right: deep forest green (Wood), warm red-orange (Fire), golden yellow (Soil), cool silver-white (Metal), deep ocean blue (Water). Each device held with dome up, opening down against the palm, against a neutral dark background. Soft studio lighting. Beneath each device, a small Korean character label: 목, 화, 토, 금, 수. Clean, clinical documentation aesthetic. Shot from a consistent 45-degree angle. Style: product photography for academic paper figure, minimal, consistent framing across all five panels.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 3 — Device Hardware Interior
+(Style: macro product photography, two-panel, top and side views)
+─────────────────────────────────────────────────────────────────────────────
+
+Two-panel close-up product photograph of the internal electronics of a cupping-form sensing device. The device is a dome or bell shape — rounded closed top, circular opening at the bottom. Left panel: the device shown upside-down (opening facing UP to reveal the interior), showing the inside of the dome cavity — ESP32 microcontroller, MAX30102 pulse sensor module (small circular board), force-sensitive resistor film (FSR, flat and circular), addressable LED ring mounted at the rim, small LiPo battery, and PCB wiring, all fitted inside the smooth translucent acrylic shell. Right panel: the assembled closed device in correct orientation — dome facing up, placed on a surface with opening facing down — glowing faintly blue from the LED rim, showing its smooth ergonomic cupping form from the side. Clean white background, clinical macro photography, sharp focus on components. Style: HCI conference paper hardware documentation, similar to CHI or TEI paper figures.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 4 — Triadic Synchronisation States
+(Style: three-panel documentary photography, hands and devices)
+─────────────────────────────────────────────────────────────────────────────
+
+Three-panel horizontal comparison photograph showing three people's hands each holding an identical cupping-form device. Each device is a smooth dome held with the rounded top facing up and the circular opening facing DOWN against the palm — like holding an upside-down bowl. The LED ring at the bottom rim glows upward onto the hand. Panel 1 (Individual): three devices glowing three unrelated colours — one red, one blue, one yellow — held apart. Panel 2 (Converging): colours beginning to shift toward similarity — two hands showing warm amber tones, one still different. Panel 3 (Synchronised): all three devices glowing the same deep golden yellow (Soil / 토 / Earth), hands close together side by side. Soft overhead studio lighting. Neutral dark surface. Text labels beneath each panel in clean sans-serif: "Individual", "Converging", "Synchronised". Style: academic paper figure, clean documentation photography, consistent framing across all three panels.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 5 — Participant Interaction Scene
+(Style: atmospheric documentary installation photography)
+─────────────────────────────────────────────────────────────────────────────
+
+Atmospheric documentary photograph of a gallery installation. Three participants stand in a loose triangle formation in a dim room, each holding a cupping-form device with the rounded dome facing up and the opening facing DOWN into their palm. The LED rings at the base rim cast coloured light upward onto each participant's hand and face — one green, one red, one blue. The ambient walls behind them are softly illuminated by an RGB lighting panel responding to their collective physiological state. The mood is quiet, ritual, and contemplative. Faces are softly blurred or not visible. Style: documentary art installation photography, exhibition documentation aesthetic, slight film grain, warm-cool colour contrast between the three glowing devices.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 6 — Installation Spatial Layout
+(Style: exhibition documentation photography, two-panel)
+─────────────────────────────────────────────────────────────────────────────
+
+Two-panel exhibition documentation photograph. Left panel: close-up of three cupping-form devices resting on a low white plinth. Each device sits with dome up and circular opening facing DOWN onto the plinth surface, glowing in green, red, and blue from the LED ring at their base rim. Small printed instruction cards and a QR code placard sit beside the devices. Right panel: wider view of the gallery room — three participants visible from behind, each standing at the plinth and holding one device dome-up in their palm, walls behind them glowing with ambient RGB colour responding to their collective physiological state. Minimal white gallery walls, soft dramatic lighting. Style: exhibition documentation photography for academic paper, similar to ACM CHI or C&C conference figures.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 7 — System Architecture Diagram
+(For Figma / draw.io — not for AI image generation)
+─────────────────────────────────────────────────────────────────────────────
+
+Linear feedback loop diagram, left to right:
+
+INPUT
+[Participant grip]
+        ↓
+[FSR — Force Sensitive Resistor]  +  [MAX30102 — PPG Pulse Sensor]
+        ↓
+Analogue Signal → [ESP32 Microcontroller]
+        ↓
+Colour Mapping (오행 / Five Elements framework)
+        ↓
+[Addressable LED Ring]
+        ↓
+OUTPUT
+[Colour — individual physiological portrait]
+
+Second layer below (collective state):
+[ESP32 #1 + ESP32 #2 + ESP32 #3] → [Wireless sync / collective averaging]
+→ [Ambient RGB LED Panel] → Room-scale colour field
+
+Style: clean sans-serif, minimal boxes and arrows, white background,
+label font Inter or Josefin Sans. Same register as ACM CHI system
+architecture figures.
+
+─────────────────────────────────────────────────────────────────────────────
+FIGURE 8 — Colour-Physiology Mapping Table (Visual Infographic)
+(For Figma or Canva — not for AI image generation)
+─────────────────────────────────────────────────────────────────────────────
+
+Clean infographic showing the Five Elements mapping as a five-row table with coloured swatches. Layout per row:
+
+[Korean character large] | [English label] | [Grip quality] | [Pulse quality] | [Colour swatch]
+
+木  Wood   | grip: building, expanding  | pulse: rising    | swatch: #006622 deep green
+화  Fire    | grip: strong, intense      | pulse: elevated  | swatch: #CC2200 warm red
+토  Soil    | grip: steady, grounded     | pulse: regular   | swatch: #DDAA00 golden yellow
+금  Metal   | grip: releasing, loose     | pulse: slowing   | swatch: #CCCCCC silver white
+수  Water   | grip: slow, sustained      | pulse: calm      | swatch: #003399 deep blue
+
+Style: clean academic infographic, sans-serif, white background,
+suitable for HCI conference paper figure.
+
+─────────────────────────────────────────────────────────────────────────────
+END

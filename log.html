@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>circulation, process log</title>
+  <style>
+    :root { color-scheme: dark; --ink: #f2efe9; --muted: rgba(242,239,233,0.58); --line: rgba(242,239,233,0.14); }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: radial-gradient(ellipse at 50% -10%, #1a1712 0%, #0b0a08 68%); color: var(--ink); }
+    body { font-family: ui-monospace, 'SF Mono', Menlo, monospace; line-height: 1.6; }
+    a { color: #d98a4a; }
+    .wrap { max-width: 46rem; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+    header h1 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.8rem; margin: 0; }
+    header .sub { color: var(--muted); font-size: 0.8rem; margin: 0.3rem 0 0; }
+    nav { margin-top: 0.6rem; font-size: 0.72rem; }
+    .entry { border-top: 1px solid var(--line); padding: 1.4rem 0; }
+    .entry .date { font-size: 0.72rem; letter-spacing: 0.1em; color: #d98a4a; }
+    .entry h2 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.25rem; margin: 0.3rem 0 0.6rem; }
+    .entry p, .entry li { font-size: 0.85rem; color: var(--ink); }
+    .entry .muted { color: var(--muted); }
+    ul { padding-left: 1.1rem; }
+    footer { color: var(--muted); font-size: 0.7rem; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>circulation, process log</h1>
+      <p class="sub">cupping, colour, and collective sensing &middot; SCD Seed Funding 2026</p>
+      <nav><a href="./index.html">the system</a></nav>
+    </header>
+
+    <div class="entry">
+      <div class="date">2026-07-07 &middot; week 1</div>
+      <h2>The engine before the hardware</h2>
+      <p>Eleven weeks to VFCD. Before any cup exists, the interaction itself is the thing to get right, so this week starts with the logic, not the electronics.</p>
+      <ul>
+        <li>The <b>Five Elements (오행) mapping engine</b> is written as a single specification: grip pressure, its trend, pulse rate, pulse regularity, and sustained hold read into one of the five elements and a colour. One spec, so the browser and the cup can never disagree.</li>
+        <li>A <b>live simulator</b> of three cups now runs that engine, with a synchronisation metric and a room colour that blooms as the three converge. Tuning the mapping needs no hardware. <a href="./index.html">Open the system.</a></li>
+        <li>The <b>cup firmware</b> (ESP32, force sensor, pulse sensor, LED ring) is drafted to the same spec, ready for the bench.</li>
+      </ul>
+      <p class="muted">The one experiment that decides the design: can the pulse sensor read a usable signal from a hand that is actively gripping? That is the first thing to test on the bench. If not, the reading leans on pressure and a brief "hold and be still" phase, which is coherent with the practice anyway.</p>
+    </div>
+
+    <footer>A design source and cultural coordinate system, not medical advice. Part of Oryn (륜).</footer>
+  </div>
+</body>
+</html>
