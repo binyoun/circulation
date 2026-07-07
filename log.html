@@ -33,6 +33,17 @@
 
     <div class="entry">
       <div class="date">2026-07-07 &middot; week 1</div>
+      <h2>The collective layer, and a way into TouchDesigner</h2>
+      <p>With one cup's logic settled, the layer that makes three cups into one is next, and it is built to keep the cups independent of it.</p>
+      <ul>
+        <li>The <b>sync hub</b> listens to the three cups, computes the synchronisation score and the room colour, and republishes to TouchDesigner. Crucially it also <b>logs every tick</b> to a timestamped file: that record is the dataset the paper is written from, and the feed for Oryn's 계 archive.</li>
+        <li>A set of <b>TouchDesigner recipes</b> lays out a path from never having opened it to a festival-ready show patch, one concrete result per week. The core turns out to be a single sentence: sensor numbers arrive as a channel and drive the colour of an image.</li>
+      </ul>
+      <p class="muted">The architecture holds one rule: the cup decides its own colour and glows on its own; TouchDesigner sits above a system that already works, so a dropped connection dims the room but never darkens the cups.</p>
+    </div>
+
+    <div class="entry">
+      <div class="date">2026-07-07 &middot; week 1</div>
       <h2>The engine before the hardware</h2>
       <p>Eleven weeks to VFCD. Before any cup exists, the interaction itself is the thing to get right, so this week starts with the logic, not the electronics.</p>
       <ul>
