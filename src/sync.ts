@@ -50,6 +50,59 @@ export function roomColour(cupRgb: Array<[number, number, number]>, sync: number
   ];
 }
 
+// --- Circulation along the generating cycle (상생) ---
+//
+// Synchronisation is agreement; circulation is passage. The generating cycle,
+// wood feeds fire feeds earth feeds metal feeds water feeds wood, gives the
+// project's title its literal mechanic: when the group's elements sit adjacent
+// on the cycle, light travels from cup to cup in the generating direction.
+// Like the rest of this file it is part of the shared spec: the hub republishes
+// it and the firmware can mirror it.
+
+/** The generating order: each element feeds the next, water feeds wood. */
+export const GENERATING: Element[] = ['wood', 'fire', 'earth', 'metal', 'water'];
+
+/** True when element a generates (feeds) element b on the 상생 cycle. */
+export function generates(a: Element, b: Element): boolean {
+  return GENERATING[(GENERATING.indexOf(a) + 1) % GENERATING.length] === b;
+}
+
+export interface CirculationReading {
+  score: number; // 0..1: how much of a full generating chain the held cups form
+  edges: Array<{ from: number; to: number }>; // cup indices, in the generating direction
+  chain: number[]; // the longest generating chain, cup indices in flow order
+}
+
+/**
+ * Flow along the generating cycle, from the cups' dominant elements.
+ * Pass null for a cup that is not being held; released cups do not circulate.
+ */
+export function circulationReading(elements: Array<Element | null>): CirculationReading {
+  const held: Array<{ e: Element; i: number }> = [];
+  elements.forEach((e, i) => { if (e !== null) held.push({ e, i }); });
+
+  const edges: Array<{ from: number; to: number }> = [];
+  for (const a of held) {
+    for (const b of held) {
+      if (a.i !== b.i && generates(a.e, b.e)) edges.push({ from: a.i, to: b.i });
+    }
+  }
+
+  // Longest generating chain (cup count is tiny, brute force is legible).
+  let chain: number[] = [];
+  const extend = (path: number[]): void => {
+    if (path.length > chain.length) chain = [...path];
+    const tip = path[path.length - 1];
+    for (const ed of edges) {
+      if (ed.from === tip && !path.includes(ed.to)) extend([...path, ed.to]);
+    }
+  };
+  for (const h of held) extend([h.i]);
+
+  const score = held.length < 2 ? 0 : Math.max(0, chain.length - 1) / (held.length - 1);
+  return { score, edges, chain };
+}
+
 /** How aligned the three cups' dominant elements are, for a readout (0..1). */
 export function elementAgreement(elements: Element[]): number {
   if (elements.length < 2) return 0;

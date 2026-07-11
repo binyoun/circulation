@@ -16,6 +16,8 @@
     header nav { margin-top: 0.6rem; font-size: 0.72rem; letter-spacing: 0.06em; }
     .lead { color: var(--muted); font-size: 0.82rem; max-width: 42rem; margin: 1.2rem 0 1.6rem; }
 
+    #stage { position: relative; }
+    #flow { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
     #cups { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
     .cup { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; }
     .cup .disc { width: 96px; height: 96px; border-radius: 50%; margin: 0.2rem auto 0.7rem; transition: background 0.15s, box-shadow 0.15s; }
@@ -43,9 +45,12 @@
       <p class="sub">cupping, colour, and collective sensing &middot; the system (simulator)</p>
       <nav><a href="./log.html">process log</a></nav>
     </header>
-    <p class="lead">Each cup reads a body through grip pressure and pulse, and glows the colour of its present state in the Five Elements (오행). As three hands synchronise, the colours harmonise and the room blooms. Drag the sliders to feel the mapping. This runs the exact engine that runs on the cups. A cultural coordinate system, not medical advice.</p>
+    <p class="lead">Each cup reads a body through grip pressure and pulse, and glows the colour of its present state in the Five Elements (오행). When the held cups' elements sit adjacent on the generating cycle (상생), light travels from cup to cup in the generating direction: circulation among others, made visible. Release a cup and its colour lingers and fades, the way a cupping mark does. Drag the sliders to feel the mapping. This runs the exact engine that runs on the cups. A cultural coordinate system, not medical advice.</p>
 
-    <div id="cups"></div>
+    <div id="stage">
+      <div id="cups"></div>
+      <canvas id="flow"></canvas>
+    </div>
 
     <div id="room">
       <div id="room-bar"><span>the room</span></div>
@@ -53,6 +58,7 @@
     </div>
 
     <p class="note">Building a grip (dragging pressure up) reads as Wood/growth; releasing reads as Metal. Strong grip with a fast pulse reads Fire; a slow, steady, sustained hold reads Water; a steady medium grip with a regular pulse reads Earth. Low pulse confidence leans the reading onto pressure.</p>
+    <p class="note">The generating cycle: Wood feeds Fire, Fire feeds Earth, Earth feeds Metal, Metal feeds Water, Water feeds Wood. Try holding one cup at Fire and another at Earth to see light travel between them; three adjacent elements turn the full cycle. Dropping pressure to zero releases a cup, and the mark it leaves fades over about forty seconds, sampled from the steady moments of the hold rather than the flick of letting go.</p>
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
