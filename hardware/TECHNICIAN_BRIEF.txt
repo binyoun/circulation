@@ -50,8 +50,7 @@ FIXED CONTRACTS, DO NOT CHANGE
 
 FIRMWARE STATUS AND WHAT NEEDS PORTING
 
-- Done: cup.ino drafts the full pipeline (sensor read, Five Elements mapping identical to the browser engine, LED ring, OSC plus serial fallback, RAW_LOG mode).
-- To port from the simulator: presence threshold (pressure below about 0.12 counts as released) and the afterglow mark (on release the LED holds the steady-hold colour and fades over about 40 seconds instead of snapping off, and the fading colour is sampled from steady moments of the hold, not the release flick).
+- Done: cup.ino drafts the full pipeline (sensor read, Five Elements mapping identical to the browser engine, LED ring, OSC plus serial fallback, RAW_LOG mode), plus the presence threshold (pressure below 0.12 counts as released) and the afterglow mark (on release the LED holds the steady-hold colour and fades over about 40 seconds instead of snapping off; the fading colour is sampled from steady moments of the hold, not the release flick). The afterglow port is untested on hardware; verifying it is part of first bench bring-up.
 - Not needed on the cup: the generating-cycle circulation logic is collective and lives in the hub.
 
 FIRST BENCH EXPERIMENT (Bin runs this, before anything is fabricated)

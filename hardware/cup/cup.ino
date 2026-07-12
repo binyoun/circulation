@@ -5,7 +5,9 @@
 // colour on its own, drives an LED ring, and streams the reading to the sync hub
 // / TouchDesigner over OSC (with a serial fallback). The cup is self-sufficient:
 // it computes and glows without any network, so the installation survives a
-// dropped connection. Mirrors src/fiveElements.ts exactly.
+// dropped connection. Mirrors src/fiveElements.ts exactly, and the presence /
+// afterglow behaviour of the simulator (src/main.ts): releasing the cup leaves
+// a mark that fades like a cupping mark instead of snapping off.
 //
 // Libraries (Arduino Library Manager):
 //   "SparkFun MAX3010x Pulse and Proximity Sensor Library" (MAX30105.h, heartRate.h)
@@ -34,6 +36,8 @@ const int   LED_PIN      = 5;
 const int   LED_COUNT    = 16;
 const int   FSR_MIN      = 200;  // calibrate: raw ADC with no grip
 const int   FSR_MAX      = 3200; // calibrate: raw ADC at firm grip
+const float PRESENCE     = 0.12f; // grip below this reads as a released cup
+const float MARK_FADE_S  = 40.0f; // a cupping mark's days of fading, compressed to seconds
 // #define RAW_LOG            // uncomment to print raw FSR/IR for tuning
 
 // ---------------- globals ----------------
@@ -48,7 +52,14 @@ long lastBeatMs = 0;
 float bpm = 0;
 
 float pressure = 0, prevPressure = 0, trend = 0, holdT = 0;
-uint8_t curR = 20, curG = 20, curB = 24;
+float showR = 20, showG = 20, showB = 24; // displayed colour (smoothed live, or fading mark)
+bool  present = false;
+bool  haveHeld = false;                   // steady-grip sample exists
+float heldR = 0, heldG = 0, heldB = 0;    // sampled at steady moments; becomes the mark
+int   heldDom = 2;
+bool  marked = false;                     // afterglow left behind after release
+float markR = 0, markG = 0, markB = 0, markAge = 0;
+int   markDom = 2;
 bool wifiOk = false;
 
 // ---------------- Five Elements engine (mirror of src/fiveElements.ts) ----------------
@@ -140,6 +151,7 @@ void loop() {
   prevPressure = pressure;
   static unsigned long lastMs = 0;
   float dt = (millis() - lastMs) / 1000.0f; lastMs = millis();
+  if (dt > 0.05f) dt = 0.05f; // clamp, as in the simulator
   if (pressure > 0.15f && fabsf(trend) < 0.12f) holdT += dt; else holdT *= 0.7f;
   float hold = min(1.0f, holdT / 4.0f);
 
@@ -147,25 +159,56 @@ void loop() {
 
   uint8_t r, g, b;
   int dom = computeElement(pressure, trend, bpm, regularity, hold, confidence, r, g, b);
-  curR = curR + (r - curR) * 0.15f; // smooth colour transition
-  curG = curG + (g - curG) * 0.15f;
-  curB = curB + (b - curB) * 0.15f;
-  for (int i = 0; i < LED_COUNT; i++) ring.setPixelColor(i, ring.Color(curR, curG, curB));
+
+  // presence + afterglow (mirror of src/main.ts)
+  bool nowPresent = pressure > PRESENCE;
+  float targetR, targetG, targetB;
+  int shownDom;
+  if (nowPresent) {
+    if (!present) { marked = false; haveHeld = false; }
+    // sample the mark from steady moments, so the flick of letting go
+    // (which reads as Metal) does not decide what lingers
+    if (fabsf(trend) < 0.35f || !haveHeld) { heldR = r; heldG = g; heldB = b; heldDom = dom; haveHeld = true; }
+    targetR = r; targetG = g; targetB = b; shownDom = dom;
+  } else {
+    if (present && haveHeld) { marked = true; markR = heldR; markG = heldG; markB = heldB; markDom = heldDom; markAge = 0; }
+    if (marked) { markAge += dt; if (markAge >= MARK_FADE_S) marked = false; }
+    if (marked) {
+      float s = powf(1.0f - markAge / MARK_FADE_S, 0.75f);
+      targetR = 20 + (markR - 20) * s;
+      targetG = 20 + (markG - 20) * s;
+      targetB = 24 + (markB - 24) * s;
+      shownDom = markDom;
+    } else {
+      targetR = 20; targetG = 20; targetB = 24; shownDom = 2;
+    }
+  }
+  present = nowPresent;
+
+  // displayed colour: quick to answer a hand, slow to let go
+  float k = min(1.0f, dt * (present ? 8.0f : 2.2f));
+  showR += (targetR - showR) * k;
+  showG += (targetG - showG) * k;
+  showB += (targetB - showB) * k;
+  for (int i = 0; i < LED_COUNT; i++)
+    ring.setPixelColor(i, ring.Color((uint8_t)showR, (uint8_t)showG, (uint8_t)showB));
   ring.show();
 
 #ifdef RAW_LOG
   Serial.printf("RAW fsr=%d ir=%ld\n", raw, pulse.getIR());
 #endif
 
-  // stream the reading
+  // stream the reading: the displayed colour, so a fading mark tints the
+  // hub's room the way it does in the simulator
+  uint8_t outR = (uint8_t)showR, outG = (uint8_t)showG, outB = (uint8_t)showB;
   if (wifiOk) {
     OSCMessage m("/cup");
     m.add((int32_t)CUP_ID).add(pressure).add(bpm).add(confidence)
-     .add((int32_t)dom).add((int32_t)r).add((int32_t)g).add((int32_t)b);
+     .add((int32_t)shownDom).add((int32_t)outR).add((int32_t)outG).add((int32_t)outB);
     udp.beginPacket(HUB_HOST, HUB_PORT); m.send(udp); udp.endPacket(); m.empty();
   }
   // serial fallback (CSV): id,pressure,bpm,confidence,element,r,g,b
-  Serial.printf("%d,%.2f,%.0f,%.2f,%d,%d,%d,%d\n", CUP_ID, pressure, bpm, confidence, dom, r, g, b);
+  Serial.printf("%d,%.2f,%.0f,%.2f,%d,%d,%d,%d\n", CUP_ID, pressure, bpm, confidence, shownDom, outR, outG, outB);
 
   delay(30);
 }
