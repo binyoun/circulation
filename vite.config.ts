@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: './index.html',
         log: './log.html',
+        manual: './manual.html',
       },
     },
   },

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>circulation, the manual</title>
+  <style>
+    :root { color-scheme: dark; --ink: #f2efe9; --muted: rgba(242,239,233,0.58); --line: rgba(242,239,233,0.14); --panel: #15130f; --accent: #d98a4a;
+      --wood: rgb(95,174,106); --fire: rgb(229,84,75); --earth: rgb(224,178,60); --metal: rgb(238,241,244); --water: rgb(47,93,138); }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: radial-gradient(ellipse at 50% -10%, #1a1712 0%, #0b0a08 68%); color: var(--ink); }
+    body { font-family: ui-monospace, 'SF Mono', Menlo, monospace; line-height: 1.55; min-height: 100%; }
+    a { color: var(--accent); }
+    .wrap { max-width: 62rem; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+    header h1 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 2rem; margin: 0; }
+    header .sub { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.06em; margin: 0.3rem 0 0; }
+    header nav { margin-top: 0.6rem; font-size: 0.72rem; letter-spacing: 0.06em; }
+    .lead { color: var(--muted); font-size: 0.82rem; max-width: 44rem; margin: 1.2rem 0 1.8rem; }
+    h2 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.4rem; margin: 2.4rem 0 0.8rem; }
+    h3 { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 1.4rem 0 0.5rem; }
+    p { font-size: 0.84rem; }
+
+    .rule { border: 1px solid var(--accent); border-radius: 10px; background: rgba(217,138,74,0.07); padding: 1rem 1.2rem; margin: 1.6rem 0; }
+    .rule p { margin: 0; font-size: 0.88rem; }
+
+    .cycle { display: flex; justify-content: center; margin: 1.2rem 0 0.4rem; }
+    .cycle-caption { text-align: center; color: var(--muted); font-size: 0.72rem; margin: 0.2rem 0 0; }
+
+    .layer { background: var(--panel); border: 1px solid var(--line); border-left-width: 4px; border-radius: 10px; padding: 0.9rem 1.1rem; margin: 0.8rem 0; }
+    .layer h4 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.05rem; margin: 0 0 0.5rem; }
+    .layer .why { color: var(--muted); font-size: 0.74rem; margin: 0 0 0.6rem; }
+    .file { display: grid; grid-template-columns: minmax(11rem, 16rem) 1fr; gap: 0.8rem; padding: 0.32rem 0; border-top: 1px dashed var(--line); font-size: 0.78rem; }
+    .file code { color: var(--ink); word-break: break-all; }
+    .file span { color: var(--muted); }
+    .l-spec { border-left-color: var(--fire); }
+    .l-site { border-left-color: var(--wood); }
+    .l-hw { border-left-color: var(--earth); }
+    .l-hub { border-left-color: var(--water); }
+    .l-paper { border-left-color: var(--metal); }
+    .l-plumb { border-left-color: var(--line); }
+
+    .where { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+    .where .w { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 1rem; }
+    .where b { display: block; font-size: 0.8rem; margin-bottom: 0.3rem; }
+    .where p { color: var(--muted); font-size: 0.74rem; margin: 0; }
+
+    .phases { border-left: 2px solid var(--line); margin: 1.2rem 0 0 0.6rem; padding: 0; list-style: none; }
+    .phase { position: relative; padding: 0 0 1.6rem 1.6rem; }
+    .phase::before { content: attr(data-n); position: absolute; left: -0.95rem; top: -0.1rem; width: 1.8rem; height: 1.8rem; border-radius: 50%;
+      background: #0b0a08; border: 1px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+    .phase h4 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.1rem; margin: 0 0 0.1rem; }
+    .phase .when { color: var(--accent); font-size: 0.7rem; letter-spacing: 0.1em; }
+    .phase ul { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+    .phase li { font-size: 0.8rem; margin: 0.25rem 0; }
+    .phase li b { color: var(--accent); font-weight: 600; }
+
+    .cmds { overflow-x: auto; }
+    .cmds table { border-collapse: collapse; width: 100%; font-size: 0.78rem; }
+    .cmds td { border-top: 1px dashed var(--line); padding: 0.4rem 0.8rem 0.4rem 0; vertical-align: top; }
+    .cmds td:first-child { white-space: nowrap; }
+    .cmds code { color: var(--accent); }
+
+    .contracts { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 1rem 1.2rem; margin: 1rem 0; }
+    .contracts ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+    .contracts li { font-size: 0.8rem; margin: 0.3rem 0; }
+    .contracts code { word-break: break-all; }
+    .note { font-size: 0.7rem; color: var(--muted); margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>circulation, the manual</h1>
+      <p class="sub">cupping, colour, and collective sensing &middot; what every file is and what to do with it</p>
+      <nav><a href="./index.html">the system</a> &middot; <a href="./log.html">process log</a></nav>
+    </header>
+
+    <p class="lead">One page for the whole build, from simulator tuning to VFCD (21 to 27 September 2026). Read it top to bottom once; after that, jump to the phase you are in.</p>
+
+    <div class="rule">
+      <p><b>The one rule everything follows.</b> Each cup is self-sufficient: it senses, computes its Five Elements colour, and glows with no network and no computer. Everything else (hub, TouchDesigner, room) is an optional layer above a system that already works. If a change would break that, do not make the change.</p>
+    </div>
+
+    <h2>The cycle the light follows</h2>
+    <div class="cycle">
+      <svg width="320" height="320" viewBox="0 0 320 320" role="img" aria-label="The generating cycle: wood feeds fire, fire feeds earth, earth feeds metal, metal feeds water, water feeds wood">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="rgba(242,239,233,0.55)"/>
+          </marker>
+        </defs>
+        <!-- nodes at 72 degree steps, radius 108, centre 160,160; arrows arc clockwise -->
+        <g fill="none" stroke="rgba(242,239,233,0.4)" stroke-width="1.6" marker-end="url(#arr)">
+          <path d="M 190 56 A 108 108 0 0 1 250 100"/>
+          <path d="M 268 156 A 108 108 0 0 1 245 227"/>
+          <path d="M 197 262 A 108 108 0 0 1 123 262"/>
+          <path d="M 75 227 A 108 108 0 0 1 52 156"/>
+          <path d="M 71 100 A 108 108 0 0 1 130 56"/>
+        </g>
+        <g font-family="ui-monospace, Menlo, monospace" text-anchor="middle">
+          <circle cx="160" cy="52" r="27" fill="rgb(95,174,106)"/>
+          <text x="160" y="59" font-size="18" fill="#14120f">목</text>
+          <text x="160" y="20" font-size="11" fill="rgba(242,239,233,0.75)">wood</text>
+          <circle cx="263" cy="127" r="27" fill="rgb(229,84,75)"/>
+          <text x="263" y="134" font-size="18" fill="#14120f">화</text>
+          <text x="300" y="112" font-size="11" fill="rgba(242,239,233,0.75)">fire</text>
+          <circle cx="224" cy="248" r="27" fill="rgb(224,178,60)"/>
+          <text x="224" y="255" font-size="18" fill="#14120f">토</text>
+          <text x="273" y="285" font-size="11" fill="rgba(242,239,233,0.75)">earth</text>
+          <circle cx="96" cy="248" r="27" fill="rgb(238,241,244)"/>
+          <text x="96" y="255" font-size="18" fill="#14120f">금</text>
+          <text x="47" y="285" font-size="11" fill="rgba(242,239,233,0.75)">metal</text>
+          <circle cx="57" cy="127" r="27" fill="rgb(47,93,138)"/>
+          <text x="57" y="134" font-size="18" fill="#f2efe9">수</text>
+          <text x="20" y="112" font-size="11" fill="rgba(242,239,233,0.75)">water</text>
+        </g>
+      </svg>
+    </div>
+    <p class="cycle-caption">상생, the generating cycle: each element feeds the next. When held cups sit adjacent on this circle, light travels between them. It is a fixed contract of the work.</p>
+
+    <h2>The map</h2>
+
+    <div class="layer l-spec">
+      <h4>The shared spec: the artwork's logic, one truth in two languages</h4>
+      <p class="why">If the browser and the cup ever disagree, the project's core claim breaks. Change the mapping in the TypeScript AND the firmware together, in one pass.</p>
+      <div class="file"><code>src/fiveElements.ts</code><span>the Five Elements (오행) mapping engine: pressure, trend, pulse, regularity, hold become an element and a colour; also the paper's system description</span></div>
+      <div class="file"><code>src/sync.ts</code><span>the collective layer: synchronisation score, room colour, and the 상생 circulation reading (score, flow edges, chain)</span></div>
+      <div class="file"><code>hardware/cup/cup.ino</code><span>the C++ mirror of the engine plus presence and afterglow, running on the cup itself</span></div>
+    </div>
+
+    <div class="layer l-site">
+      <h4>The site: what you, curators, and the public see</h4>
+      <p class="why">Every push to main auto-deploys to <a href="https://binyoun.github.io/circulation/">binyoun.github.io/circulation</a> in about 30 seconds. You never deploy manually.</p>
+      <div class="file"><code>index.html</code><span>the live simulator page: three virtual cups, the flow layer, the room</span></div>
+      <div class="file"><code>src/main.ts</code><span>the simulator's code: presence, afterglow marks, light travelling cup to cup, sliders. Tune the interaction here first, hardware second</span></div>
+      <div class="file"><code>log.html</code><span>the process log. One entry per build week: grant report, paper documentation, and curator-facing story in one file</span></div>
+      <div class="file"><code>.github/workflows/deploy.yml</code><span>the auto-deploy</span></div>
+    </div>
+
+    <div class="layer l-hw">
+      <h4>The hardware layer</h4>
+      <div class="file"><code>hardware/cup/cup.ino</code><span>the firmware you flash onto each ESP32. The config block at the top (CUP_ID, Wi-Fi, hub address, pins, calibration, PRESENCE, MARK_FADE_S) is the only part edited per cup</span></div>
+      <div class="file"><code>hardware/cup/README.md</code><span>wiring and library guide</span></div>
+      <div class="file"><code>hardware/TECHNICIAN_BRIEF.txt</code><span>the meeting document: real cups + printed insert, sensors, parts list, contracts, safety line. Copy-paste ready</span></div>
+    </div>
+
+    <div class="layer l-hub">
+      <h4>The collective layer: after three cups exist</h4>
+      <div class="file"><code>hub/hub.ts</code><span>the sync hub: listens to cups (OSC port 8000), computes sync + room colour, republishes to TouchDesigner (port 9000), logs every tick to <code>logs/session-*.jsonl</code>: the paper's dataset and the 계 archive feed. Run with <code>npm run hub</code></span></div>
+      <div class="file"><code>hub/README.md</code><span>ports and message schema</span></div>
+      <div class="file"><code>touchdesigner/RECIPES.md</code><span>the from-zero TouchDesigner path, one concrete artifact per recipe, ending at a festival-ready show patch. Optional by design</span></div>
+    </div>
+
+    <div class="layer l-paper">
+      <h4>The paper and reporting</h4>
+      <div class="file"><code>Circulation_Paper_Draft_and_Figure_Prompts.md</code><span>the paper draft (target ISEA 2027) with its figure plan</span></div>
+      <div class="file"><code>circulation-figure-prompts.txt</code><span>the extracted figure prompts, copy-paste ready</span></div>
+      <div class="file"><code>Circulation_Monthly_Reports_Aug-Nov_2026.md</code><span>the SCD grant reporting skeleton, August to November</span></div>
+    </div>
+
+    <div class="layer l-plumb">
+      <h4>Plumbing: you rarely touch these</h4>
+      <div class="file"><code>package.json &middot; tsconfig.json &middot; vite.config.ts</code><span>build configuration, plus <code>package-lock.json</code>, <code>.gitignore</code>, <code>src/vite-env.d.ts</code>, and <code>README.md</code> (the repo's front page)</span></div>
+    </div>
+
+    <h2>What runs where</h2>
+    <div class="where">
+      <div class="w"><b>Browser, anywhere</b><p>the simulator, live on GitHub Pages or locally with npm run dev</p></div>
+      <div class="w"><b>The cup (ESP32)</b><p>cup.ino, standalone: sense, compute, glow</p></div>
+      <div class="w"><b>Your laptop at the venue</b><p>the hub (npm run hub), and TouchDesigner if used</p></div>
+      <div class="w"><b>GitHub</b><p>hosting, auto-deploy, and the public archive of everything</p></div>
+    </div>
+
+    <h2>What you do, phase by phase</h2>
+    <ol class="phases">
+      <li class="phase" data-n="1">
+        <h4>Now, before any parts arrive</h4>
+        <ul>
+          <li>Tune the interaction in the <a href="./index.html">simulator</a> until the mapping feels true. The knobs are named constants: element thresholds in <b>fiveElements.ts</b>, sync windows in <b>sync.ts</b>, PRESENCE and MARK_FADE_S in <b>main.ts</b>. Change a value, push, feel it live two minutes later.</li>
+          <li>Take <b>TECHNICIAN_BRIEF.txt</b> to the technician meeting.</li>
+          <li>Buy a real cupping cup set and order the parts list in the brief. Lead times are the schedule risk.</li>
+          <li>Hold a cup mouth-down on your palm for a minute; the posture decides the insert design.</li>
+        </ul>
+      </li>
+      <li class="phase" data-n="2">
+        <h4>Bench week, when parts arrive</h4>
+        <ul>
+          <li>Install the Arduino IDE, add ESP32 board support, install the three libraries named at the top of <b>cup.ino</b> (SparkFun MAX3010x, Adafruit NeoPixel, CNMAT OSC).</li>
+          <li>One component at a time, breadboard first: LED ring alone, then pressure sensor alone, then MAX30102 alone, watching the Serial Plotter. Never debug two new parts at once.</li>
+          <li>The pin numbers in cup.ino assume a classic ESP32 dev board; a Xiao ESP32-C3 (the brief's recommendation) needs the config block remapped first. Do not flash blindly.</li>
+          <li>Run the two bench experiments from the brief: <b>palm PPG under seal pressure</b> (the design decider) and <b>BMP280 inside a sealed cup</b>. Uncomment RAW_LOG in cup.ino to print raw values. Keep all logs: they are the dataset's first entries.</li>
+          <li>Verify the afterglow on real hardware: grip, release, watch the ring hold and fade over about 40 seconds.</li>
+        </ul>
+      </li>
+      <li class="phase" data-n="3">
+        <h4>MVP gate <span class="when">around week 4</span></h4>
+        <ul>
+          <li>One untethered cup: insert in a real cup, power bank, hand to colour, <b>stable for 30 minutes</b>.</li>
+          <li>Calibrate FSR_MIN / FSR_MAX (or the BMP280 equivalents) per cup from RAW_LOG values; set CUP_ID 1, 2, 3.</li>
+          <li>Only after this gate passes: build the other two.</li>
+        </ul>
+      </li>
+      <li class="phase" data-n="4">
+        <h4>Three cups and the collective layer</h4>
+        <ul>
+          <li>Cups and laptop on one Wi-Fi network; set WIFI_SSID and HUB_HOST in each cup's config block.</li>
+          <li>Run <b>npm run hub</b>. Cups appear as /cup messages; every session is logged to logs/. Back those files up.</li>
+          <li>Rehearse the three-body choreography with real people and tune the sync windows against what real triads do.</li>
+        </ul>
+      </li>
+      <li class="phase" data-n="5">
+        <h4>TouchDesigner and the room <span class="when">optional, first to cut</span></h4>
+        <ul>
+          <li>Work through <b>touchdesigner/RECIPES.md</b> in order. The hub already speaks to TD on port 9000; TD only listens and paints.</li>
+          <li>If TD or the room layer fails, the cups still work, by design.</li>
+        </ul>
+      </li>
+      <li class="phase" data-n="6">
+        <h4>VFCD week <span class="when">21 to 27 September</span></h4>
+        <ul>
+          <li>Bring: 3 cups + 1 spare cup body + 1 spare insert, charged power banks + spares, alcohol wipes (wipe cups between participants), the laptop with the hub, a printed copy of the contracts, a phone hotspot as backup Wi-Fi.</li>
+          <li>If Wi-Fi dies, the serial CSV fallback in cup.ino reads any cup over a USB cable.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Command cheat sheet</h2>
+    <p style="color: var(--muted); font-size: 0.76rem;">Run in the project folder (~/Projects/circulation).</p>
+    <div class="cmds">
+      <table>
+        <tr><td><code>npm install</code></td><td>once, after cloning on a new machine</td></tr>
+        <tr><td><code>npm run dev</code></td><td>local simulator at the printed localhost address</td></tr>
+        <tr><td><code>npm run hub</code></td><td>the sync hub (needs cups or a test sender on the network)</td></tr>
+        <tr><td><code>npm run typecheck</code></td><td>sanity check the TypeScript</td></tr>
+        <tr><td><code>npm run build</code></td><td>what the auto-deploy runs; push to main and the site updates itself</td></tr>
+      </table>
+    </div>
+
+    <h2>Contracts that must not change</h2>
+    <div class="contracts">
+      <ul>
+        <li>OSC, cup to hub, port 8000: <code>/cup id pressure bpm confidence element r g b</code></li>
+        <li>OSC, hub to TouchDesigner, port 9000: <code>/circulation/sync</code>, <code>/circulation/agreement</code>, <code>/circulation/room</code>, <code>/circulation/cup/&lt;id&gt;</code></li>
+        <li>The generating cycle: Wood feeds Fire, Fire feeds Earth, Earth feeds Metal, Metal feeds Water, Water feeds Wood.</li>
+        <li><b>No real suction marks on visitors' skin.</b> The LED afterglow is the mark.</li>
+      </ul>
+    </div>
+
+    <p class="note">Circulation: Cupping, Colour, and Collective Sensing &middot; SCD Seed Funding 2026 &middot; a cultural coordinate system, not medical advice. The plain-text version of this manual is MANUAL.md in the repository.</p>
+  </div>
+</body>
+</html>
