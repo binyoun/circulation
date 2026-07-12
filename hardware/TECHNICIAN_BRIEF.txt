@@ -1,0 +1,73 @@
+CIRCULATION: CUPPING, COLOUR, AND COLLECTIVE SENSING
+Technician briefing, prepared 11 July 2026
+Bin Youn, RMIT Vietnam. SCD Seed Funding 2026. Exhibition: VFCD, 21 to 27 September 2026.
+
+THE PROJECT IN ONE PARAGRAPH
+
+Three handheld devices built from real cupping therapy cups (giac hoi / buhang vacuum cups). Each cup reads the body holding it through pressure and pulse, maps that reading to one of the Five Elements (ohaeng), and glows that colour from within. When three participants hold cups and their states sit adjacent on the generating cycle, light travels from cup to cup: circulation between bodies. When a cup is released, its colour lingers and fades like a cupping mark. A working browser simulator of the full interaction is live at https://binyoun.github.io/circulation/ and the firmware draft is in the repo at https://github.com/binyoun/circulation (hardware/cup/cup.ino).
+
+THE ONE ARCHITECTURE RULE
+
+Each cup must work completely standalone: sense, compute its colour, glow, with no network and no computer. Wi-Fi (OSC to a hub, then TouchDesigner) is an optional layer above a system that already works. Nothing in the build may make the cup depend on anything outside itself.
+
+BUILD DIRECTION: REAL CUPS, PRINTED INSERT
+
+- Body: standard transparent plastic vacuum cupping cups, largest size in the set (about 5 to 7 cm diameter). The transparent body is the LED diffuser. Rigid, alcohol-wipeable, cheap, spares are trivial.
+- Electronics: one 3D-printed insert cap that plugs into the cup like a stopper and carries everything. Print three plus spares; if a cup cracks during the show the insert moves to a spare cup in minutes.
+- Insert contents: small ESP32 board (Seeed Xiao ESP32-C3 class, a full dev board will not fit), 12 or 16 LED NeoPixel ring facing up into the cup body (24 LED ring will not fit), battery or power feed, sensors facing down toward the cup mouth where the palm is.
+- Interaction posture: the cup is held mouth-down against the palm, so the palm seals the chamber the way skin does in treatment.
+- Open design question for you: how to seal the insert against the cup wall well enough that palm pressure gives a clean air-pressure signal inside the chamber (O-ring, friction fit, or gasket).
+
+SENSORS
+
+- Pressure, preferred option: BMP280 barometric sensor inside the sealed chamber. With the palm sealing the mouth, pressing raises internal air pressure and pulling creates gentle negative pressure, which is the actual physics of cupping. One I2C part, nothing visible, nothing touching the skin. Needs the seal question above solved.
+- Pressure, fallback option: FSR (force sensitive resistor) on the rim or grip, as currently drafted in the firmware. Keep both in the parts order; a bench test decides.
+- Pulse: MAX30102 PPG sensor mounted in the centre of the insert, reading the palm through the cup mouth. Palm PPG is weaker than fingertip and needs firm contact; this is the main thing the first bench experiment must answer.
+- Either way the firmware input stays a calibrated 0 to 1 pressure value plus BPM and confidence, so the mapping engine, simulator, and hub are unaffected by the sensor choice.
+
+POWER
+
+- Target: one cup running untethered for 30 or more minutes.
+- Preference: swappable USB power bank inside or feeding the insert, because it is boring and safe for a week-long public show with no unattended LiPo charging. If you think a LiPo plus TP4056 is clearly better for the form factor, argue it, but safety and swap speed during the exhibition win.
+
+PARTS AND SOURCING (Vietnam, order early, lead times decide the schedule)
+
+- Transparent vacuum cupping cup sets: 2 full sets minimum (spares and size options).
+- ESP32 Xiao-class boards: 5.
+- MAX30102 modules: 5.
+- BMP280 modules: 5.
+- FSR sensors: 5.
+- NeoPixel rings, 12 or 16 LED: 5.
+- Power banks or LiPo cells plus TP4056 boards per the power decision, for 3 cups plus 1 spare.
+- Wiring, connectors (JST preferred), O-rings or gasket material, 3D print filament.
+- Rule of thumb: at least 2 of everything, 4 to 5 of anything cheap, because beginner hardware sessions kill components and reordering eats weeks.
+
+FIXED CONTRACTS, DO NOT CHANGE
+
+- OSC schema from cup to hub, port 8000: /cup id pressure bpm confidence element r g b.
+- Hub to TouchDesigner, port 9000: /circulation/sync, /circulation/agreement, /circulation/room, /circulation/cup/<id>.
+- The firmware has a RAW_LOG serial mode for calibration; per-cup calibration of the pressure signal to 0 to 1 is expected work.
+
+FIRMWARE STATUS AND WHAT NEEDS PORTING
+
+- Done: cup.ino drafts the full pipeline (sensor read, Five Elements mapping identical to the browser engine, LED ring, OSC plus serial fallback, RAW_LOG mode).
+- To port from the simulator: presence threshold (pressure below about 0.12 counts as released) and the afterglow mark (on release the LED holds the steady-hold colour and fades over about 40 seconds instead of snapping off, and the fading colour is sampled from steady moments of the hold, not the release flick).
+- Not needed on the cup: the generating-cycle circulation logic is collective and lives in the hub.
+
+FIRST BENCH EXPERIMENT (Bin runs this, before anything is fabricated)
+
+- Question 1, the design decider: can the MAX30102 read a usable pulse from a palm that is sealing and pressing a cup? Conditions: light, medium, firm seal pressure, plus a fidgeting hand, 60 seconds each, at least two different people, compared against a reference pulse (watch or manual count). Pass: within about 5 BPM of reference over 20 to 30 second windows at medium pressure.
+- Question 2: tape a BMP280 inside a real cup, seal with the palm, press and pull, and check for a clean repeatable range to map to 0 to 1.
+- The fork: if palm PPG fails, the interaction pivots to pressure-primary with a hold-and-be-still reading phase before the pulse is taken. This fallback is already designed and is coherent with how a pulse is actually taken, so it is a pivot, not a crisis.
+- All raw logs from these tests are kept: they are the first entries of the project dataset.
+
+SAFETY AND ETHICS LINE
+
+No real suction marks on visitors' skin, ever: strangers, hygiene, consent, and university ethics all rule it out. The palm-seal interaction gives the physics without the marks, and the fading LED afterglow is the mark. Cups must be alcohol-wipeable between participants.
+
+MILESTONES
+
+- Week 1 (now): bench experiment, parts ordered.
+- Around week 4, MVP gate: one untethered cup, hand to colour, stable for 30 minutes.
+- Then: clone to three, sync via hub, optional room layer.
+- 21 to 27 September: VFCD install and workshop.
