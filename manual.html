@@ -75,7 +75,7 @@
       <nav><a href="./index.html">the system</a> &middot; <a href="./log.html">process log</a></nav>
     </header>
 
-    <p class="lead">One page for the whole build, from simulator tuning to VFCD (21 to 27 September 2026). Read it top to bottom once; after that, jump to the phase you are in.</p>
+    <p class="lead">One page for the whole build, from simulator tuning to the end of the funded period (30 November 2026). The project does not target an exhibition deadline; the whole window goes into building the machine fully. Read it top to bottom once; after that, jump to the phase you are in.</p>
 
     <div class="rule">
       <p><b>The one rule everything follows.</b> Each cup is self-sufficient: it senses, computes its Five Elements colour, and glows with no network and no computer. Everything else (hub, TouchDesigner, room) is an optional layer above a system that already works. If a change would break that, do not make the change.</p>
@@ -193,33 +193,38 @@
         </ul>
       </li>
       <li class="phase" data-n="3">
-        <h4>MVP gate <span class="when">around week 4</span></h4>
+        <h4>MVP gate <span class="when">end of August</span></h4>
         <ul>
           <li>One untethered cup: insert in a real cup, power bank, hand to colour, <b>stable for 30 minutes</b>.</li>
           <li>Calibrate FSR_MIN / FSR_MAX (or the BMP280 equivalents) per cup from RAW_LOG values; set CUP_ID 1, 2, 3.</li>
+          <li>Close the month with an <b>internal pilot</b>: around ten colleagues' hands, every session logged, note which grips break the reading.</li>
           <li>Only after this gate passes: build the other two.</li>
         </ul>
       </li>
       <li class="phase" data-n="4">
-        <h4>Three cups and the collective layer</h4>
+        <h4>Three cups and the collective layer <span class="when">September</span></h4>
         <ul>
           <li>Cups and laptop on one Wi-Fi network; set WIFI_SSID and HUB_HOST in each cup's config block.</li>
           <li>Run <b>npm run hub</b>. Cups appear as /cup messages; every session is logged to logs/. Back those files up.</li>
           <li>Rehearse the three-body choreography with real people and tune the sync windows against what real triads do.</li>
+          <li>Iterate the insert and enclosure with what the pilot taught you; September is for making the triad solid.</li>
         </ul>
       </li>
       <li class="phase" data-n="5">
-        <h4>TouchDesigner and the room <span class="when">optional, first to cut</span></h4>
+        <h4>The room, and endurance <span class="when">October</span></h4>
         <ul>
-          <li>Work through <b>touchdesigner/RECIPES.md</b> in order. The hub already speaks to TD on port 9000; TD only listens and paints.</li>
-          <li>If TD or the room layer fails, the cups still work, by design.</li>
+          <li>Work through <b>touchdesigner/RECIPES.md</b> in order. The hub already speaks to TD on port 9000; TD only listens and paints. Still optional by architecture, but now a scheduled month, not a cut line.</li>
+          <li>Endurance: full-afternoon soak tests, battery rotation drills, hygiene protocol. The machine must run unattended-long, not demo-long.</li>
+          <li>Structured triad sessions with invited participants, logged through the hub: the dataset the paper is written from.</li>
         </ul>
       </li>
       <li class="phase" data-n="6">
-        <h4>VFCD week <span class="when">21 to 27 September</span></h4>
+        <h4>Finish, document, archive <span class="when">November, funded period ends 30 Nov</span></h4>
         <ul>
-          <li>Bring: 3 cups + 1 spare cup body + 1 spare insert, charged power banks + spares, alcohol wipes (wipe cups between participants), the laptop with the hub, a printed copy of the contracts, a phone hotspot as backup Wi-Fi.</li>
-          <li>If Wi-Fi dies, the serial CSV fallback in cup.ino reads any cup over a USB cable.</li>
+          <li>Documentation video and photography of the finished system to submission standard.</li>
+          <li>Launch the standalone project website and 10-year archive (a budgeted deliverable), folding in the simulator, the process log, and rendered session data.</li>
+          <li>A final showing for the school (R&amp;I team, mentor, collaborators), run like a rehearsal of a future exhibition. Demo kit: spare cup body and insert, power banks, wipes, printed contracts, phone hotspot; the serial CSV fallback reads any cup over USB if Wi-Fi dies.</li>
+          <li>Final seed-funding report and the paper draft. The machine, the dataset, the archive, and the draft are the deliverables.</li>
         </ul>
       </li>
     </ol>

@@ -1,6 +1,6 @@
 CIRCULATION: CUPPING, COLOUR, AND COLLECTIVE SENSING
 Technician briefing, prepared 11 July 2026
-Bin Youn, RMIT Vietnam. SCD Seed Funding 2026. Exhibition: VFCD, 21 to 27 September 2026.
+Bin Youn, RMIT Vietnam. SCD Seed Funding 2026. Funded build: 1 June to 30 November 2026. No exhibition deadline: the goal is a fully built, endurance-tested three-cup system by the end of November.
 
 THE PROJECT IN ONE PARAGRAPH
 
@@ -13,7 +13,7 @@ Each cup must work completely standalone: sense, compute its colour, glow, with 
 BUILD DIRECTION: REAL CUPS, PRINTED INSERT
 
 - Body: standard transparent plastic vacuum cupping cups, largest size in the set (about 5 to 7 cm diameter). The transparent body is the LED diffuser. Rigid, alcohol-wipeable, cheap, spares are trivial.
-- Electronics: one 3D-printed insert cap that plugs into the cup like a stopper and carries everything. Print three plus spares; if a cup cracks during the show the insert moves to a spare cup in minutes.
+- Electronics: one 3D-printed insert cap that plugs into the cup like a stopper and carries everything. Print three plus spares; if a cup body cracks, the insert moves to a spare cup in minutes.
 - Insert contents: small ESP32 board (Seeed Xiao ESP32-C3 class, a full dev board will not fit), 12 or 16 LED NeoPixel ring facing up into the cup body (24 LED ring will not fit), battery or power feed, sensors facing down toward the cup mouth where the palm is.
 - Interaction posture: the cup is held mouth-down against the palm, so the palm seals the chamber the way skin does in treatment.
 - Open design question for you: how to seal the insert against the cup wall well enough that palm pressure gives a clean air-pressure signal inside the chamber (O-ring, friction fit, or gasket).
@@ -28,7 +28,7 @@ SENSORS
 POWER
 
 - Target: one cup running untethered for 30 or more minutes.
-- Preference: swappable USB power bank inside or feeding the insert, because it is boring and safe for a week-long public show with no unattended LiPo charging. If you think a LiPo plus TP4056 is clearly better for the form factor, argue it, but safety and swap speed during the exhibition win.
+- Preference: swappable USB power bank inside or feeding the insert, because it is boring and safe for long public sessions with no unattended LiPo charging. If you think a LiPo plus TP4056 is clearly better for the form factor, argue it, but safety and swap speed during long running sessions win.
 
 PARTS AND SOURCING (Vietnam, order early, lead times decide the schedule)
 
@@ -66,7 +66,8 @@ No real suction marks on visitors' skin, ever: strangers, hygiene, consent, and 
 
 MILESTONES
 
-- Week 1 (now): bench experiment, parts ordered.
-- Around week 4, MVP gate: one untethered cup, hand to colour, stable for 30 minutes.
-- Then: clone to three, sync via hub, optional room layer.
-- 21 to 27 September: VFCD install and workshop.
+- July: bench experiments, parts ordered, technician contract in place.
+- End of August, MVP gate: one untethered cup in a real cup body, hand to colour, stable for 30 minutes, closed by an internal pilot of about ten hands.
+- September: clone to three, sync via hub, enclosure iteration.
+- October: room layer (TouchDesigner), endurance testing, structured triad sessions.
+- November: documentation, project website and 10-year archive, final showing for the school. Funded period ends 30 November.

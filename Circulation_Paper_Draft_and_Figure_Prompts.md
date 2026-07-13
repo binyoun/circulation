@@ -3,7 +3,7 @@
 
 Target: SIGGRAPH Asia 2027 Art Papers (7-page ACM format, structure modelled on Zhang, Hartono and Hall, C&C 2026).
 Authors: Bin Youn (lead, corresponding), Patrick Hartono, Renusha Athugala.
-Convention: no em-dashes anywhere. Bracketed text = to be completed after VFCD deployment (October to November 2026).
+Convention: no em-dashes anywhere. Bracketed text = to be completed from the studio deployment and structured triad sessions (October to November 2026).
 
 ---
 
@@ -11,7 +11,7 @@ Convention: no em-dashes anywhere. Bracketed text = to be completed after VFCD d
 
 ### Abstract (draft, ~150 words)
 
-We present Circulation, an interactive installation reframing cupping therapy (부항 / giác hơi / 拔罐) as bodily interface. Three handheld cupping-form devices read a two-signal portrait of each participant, grip pressure and pulse rhythm, and translate it into one of five colour states drawn from the Five Elements (오행) framework of East Asian medicine. As participants' holds and rhythms converge, the three cups harmonise and an ambient colour field blooms across the room. Deployed for seven days within [VFCD 2026, Ho Chi Minh City] ([N] sessions), the work demonstrated how a traditional care practice can operate as a cosmotechnical interface: a diagnostic gesture, the quality of a hold, becomes the primary interaction, and collective synchronisation becomes a designed, felt outcome rather than a biometric verification. We contribute (1) cupping as cosmotechnical interface, (2) a Five Elements colour-physiology mapping methodology, and (3) design implications for collective biosignal interaction in Asia Pacific cultural contexts.
+We present Circulation, an interactive installation reframing cupping therapy (부항 / giác hơi / 拔罐) as bodily interface. Three handheld cupping-form devices read a two-signal portrait of each participant, grip pressure and pulse rhythm, and translate it into one of five colour states drawn from the Five Elements (오행) framework of East Asian medicine. As participants' holds and rhythms converge, the three cups harmonise and an ambient colour field blooms across the room. Deployed across [N] structured triadic sessions in a studio setting ([RMIT Vietnam, Ho Chi Minh City], September to November 2026), the work demonstrated how a traditional care practice can operate as a cosmotechnical interface: a diagnostic gesture, the quality of a hold, becomes the primary interaction, and collective synchronisation becomes a designed, felt outcome rather than a biometric verification. We contribute (1) cupping as cosmotechnical interface, (2) a Five Elements colour-physiology mapping methodology, and (3) design implications for collective biosignal interaction in Asia Pacific cultural contexts.
 
 ### 1 Introduction
 
@@ -46,7 +46,7 @@ Cupping draws inward through negative pressure, promoting internal circulation. 
 ### 4 System and Experience Design
 
 #### 4.1 Installation Staging
-[Spatial description: three plinths / three participants facing configuration, ambient wall field, didactic panel with the no-medical-claim statement, seven-day public setting within VFCD 2026. Mirror Onycho Lab 4.1 in length.]
+[Spatial description: three plinths / three participants facing configuration, ambient wall field, didactic panel with the no-medical-claim statement, staged as a studio installation at RMIT Vietnam exactly as it would be exhibited. Mirror Onycho Lab 4.1 in length.]
 
 #### 4.2 Cupping-Form Devices
 Each handheld device houses an ESP32 microcontroller, a MAX30102 PPG sensor positioned in a dedicated fingertip contact well on the rim (separating pulse reading from the gripping palm), [an FSR beneath the palm contact area / a barometric pressure sensor within the sealed dome reading grip through actual negative-pressure physics, per August outcome], an addressable LED ring at the rim, and a rechargeable LiPo cell with dock charging. Shells are [resin/acrylic], sealed and wipeable for public handling. [Dimensions, weight.]
@@ -55,13 +55,13 @@ Each handheld device houses an ESP32 microcontroller, a MAX30102 PPG sensor posi
 [Sampling and filtering; signal quality index; graceful neutral "breathing" state on pulse-lock loss; calibration thresholds from the internal pilot (N=~10, M grip styles). One honest paragraph on the grip-occlusion problem and its resolution: this is a strength, not a weakness, in review.]
 
 #### 4.4 Synchronisation Logic and the Ambient Layer
-Cups stream OSC over Wi-Fi to a central TouchDesigner system that computes individual element states and a collective convergence metric weighted toward behavioural convergence (grip steadiness, hold rhythm) with pulse coherence as a secondary term. State machine: idle, reading, element lock, pairing, triadic sync, bloom. The ambient layer, driven via Art-Net, expands the collective state to room scale. [Rationale sentence: designed synchrony as invitation, ensuring the bloom is dependably reachable within a session.]
+Each cup computes its own element state on-device and streams OSC over Wi-Fi to a sync hub that computes a collective convergence metric weighted toward behavioural convergence (grip steadiness, hold rhythm) with pulse coherence as a secondary term, and republishes to TouchDesigner. State machine: idle, reading, element lock, pairing, triadic sync, bloom. The ambient layer, driven via Art-Net, expands the collective state to room scale; the cups remain self-sufficient if the hub or ambient layer drops. [Rationale sentence: designed synchrony as invitation, ensuring the bloom is dependably reachable within a session.]
 
 #### 4.5 Safety, Hygiene, and Ethics
-[Hygiene protocol for handled devices across seven days; no medical claims in didactics; RMIT ethics approval [number]; anonymised data; separate consent for documentation, mirroring Onycho Lab 4.5.]
+[Hygiene protocol for handled devices across repeated long sessions; no medical claims in didactics; RMIT ethics approval [number]; anonymised data; separate consent for documentation, mirroring Onycho Lab 4.5.]
 
 ### 5 Method
-[Deployment account in Onycho Lab's format: seven-day public exhibition within VFCD 2026, 21 to 27 September; [N] complete triadic sessions and [N] total participants ([demographic note if collected]); session structure and duration; data comprised interaction logs (grip, pulse, state transitions), fieldnotes, voluntary participant reflections gathered conversationally, and media documentation; qualitative thematic analysis aligned with practice-based research; documentation and publication consent.]
+[Deployment account in Onycho Lab's format: studio deployment at RMIT Vietnam, September to November 2026, comprising rehearsal sessions followed by [N] ethics-approved structured triadic sessions with [N] total participants ([demographic note if collected]); session structure and duration; data comprised interaction logs (grip, pulse, state transitions), fieldnotes, voluntary participant reflections gathered conversationally, and media documentation; qualitative thematic analysis aligned with practice-based research; documentation and publication consent.]
 
 ### 6 Findings
 [To be written from October analysis. Anticipated thematic structure, to be confirmed or replaced by the data:]
@@ -108,7 +108,7 @@ Nine figures, mirroring the Onycho Lab figure logic. Each entry gives: purpose, 
 ### Figure 1 — Installation infrastructure (mirrors Onycho Fig. 1)
 Purpose: establish the staging. Left: prepared installation; right: contextual view in venue.
 Prompt: "Gallery installation documentation photograph, three translucent dome-shaped handheld devices resting on three white minimalist plinths arranged in a triangle, each dome glowing softly from an LED ring at its base in green, red, and deep blue, dark gallery space, large soft ambient colour field washing the back wall in blended gradients, one small didactic panel with QR code, museum documentation photography style, Sony A7 look, natural perspective, no people, realistic materials, subtle reflections on concrete floor"
-October shot: identical composition at VFCD venue, empty room, tripod, wide + medium pair.
+October/November shot: identical composition in the staged studio installation, empty room, tripod, wide + medium pair.
 
 ### Figure 2 — Device concept and exploded view (mirrors Onycho Fig. 2 logic: concept + realised)
 Purpose: left, design sketch; right, realised device photograph.
@@ -154,5 +154,5 @@ Build as clean vector table: Element (목/木 etc.), English label (Wood, Fire, 
 ## Production order
 Now (July, light effort): Figures 7 and 9 as vector graphics; regenerate any report renders with "Earth" corrected and one public title.
 August: Figures 5 and 6 become real during the pilot and placement tests.
-September, VFCD week: Figure 8 sequence captured daily; Figure 1 venue shots.
-October shoot: Figures 1, 2 (right), 3, 4 finalised; Ars video shot from the same list.
+September to October, triad rehearsals and structured sessions: Figure 8 sequence captured across sessions; Figure 1 staged-installation shots.
+November shoot: Figures 1, 2 (right), 3, 4 finalised on the finished system; Ars video shot from the same list.

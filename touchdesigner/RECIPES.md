@@ -103,7 +103,7 @@ def onValueChange(channel, sampleIndex, val, prev):
 Artifact: `circulation_show.toe` that boots into Perform mode and degrades
 gracefully. Week 8 rehearsal is the exam.
 
-## Recipe F, POPs for ISEA, handwriting to constellation (weeks 9 to 12, after VFCD freeze)
+## Recipe F, POPs for ISEA, handwriting to constellation (after the Circulation show patch is stable)
 
 The ISEA "Counting Cultural Stars" toolkit. Separate skill track; the CHOP/TOP
 fundamentals transfer. Needs the 2025 build (POPs).

@@ -12,7 +12,7 @@ itself is the diagnostic gesture, after the O-ring test (오링 테스트): how 
 steadily, and long a hand grips. This is a design source and cultural coordinate
 system, **not medical advice**; it reads present state, not fixed constitution.
 
-SCD Seed Funding 2026. Shown at VFCD 2026 (21 to 27 September). Part of Øryn (륜).
+SCD Seed Funding 2026, funded build June to November 2026. Part of Øryn (륜).
 Grounded in the artist's practice of Korean hand acupuncture (수지침).
 
 ## What is here now

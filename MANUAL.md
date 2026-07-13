@@ -1,6 +1,6 @@
 # Circulation, the manual
 
-What every file in this repository is, where it runs, and what you do with it at each phase between now and VFCD (21 to 27 September 2026). Read top to bottom once; after that, jump to the phase you are in.
+What every file in this repository is, where it runs, and what you do with it at each phase between now and the end of the funded period (30 November 2026). The project does not target VFCD in September; the whole window goes into building the machine fully, and the capstone is a finished, documented, endurance-tested three-cup system. Read top to bottom once; after that, jump to the phase you are in.
 
 ## The one rule everything follows
 
@@ -69,25 +69,32 @@ Rule: if you change the mapping, change it in `src/fiveElements.ts` AND `cup.ino
 4. Run the two bench experiments from the brief: palm PPG under seal pressure (the design decider) and BMP280 inside a sealed cup. Uncomment `#define RAW_LOG` in `cup.ino` to print raw sensor values for this. Keep all logs.
 5. Verify the afterglow port on real hardware: grip, release, and watch the ring hold and fade over about 40 seconds. It mirrors the simulator but has never run on a physical LED ring.
 
-### MVP gate, around week 4
+### MVP gate, end of August
 
 1. One untethered cup: insert in a real cup, battery or power bank, hand to colour, stable for 30 minutes.
 2. Calibrate: set `FSR_MIN` and `FSR_MAX` (or the BMP280 equivalents) per cup from RAW_LOG values, and set `CUP_ID` 1, 2, 3.
-3. Only after this gate passes: build the other two.
+3. An internal pilot with colleagues (around ten hands) closes the month: log every session, note which grips break the reading.
+4. Only after this gate passes: build the other two.
 
-### Three cups and the collective layer
+### September: three cups and the collective layer
 
 1. Put the cups and your laptop on one Wi-Fi network, set `WIFI_SSID` and `HUB_HOST` in each cup's config block.
 2. Run `npm run hub` in this folder. Cups appear as `/cup` messages; the hub logs every session to `logs/`. Those files are your dataset; back them up.
 3. Rehearse the three-body choreography with real people and tune the sync windows in `src/sync.ts` against what real triads do.
+4. Iterate the insert and enclosure with what the pilot taught you; September is for making the triad solid, not for shipping it.
 
-### TouchDesigner and the room (optional, first to cut)
+### October: the room, and endurance
 
-Work through `touchdesigner/RECIPES.md` in order. The hub already speaks to TD on port 9000; TD only listens and paints. If TD or the room layer fails, the cups still work, by design.
+1. Work through `touchdesigner/RECIPES.md` in order. The hub already speaks to TD on port 9000; TD only listens and paints. The room layer is still optional by architecture (if TD fails, the cups still work), but October is its scheduled month, no longer a cut line.
+2. Endurance: full-afternoon soak tests, battery rotation drills, hygiene protocol (alcohol wipes between hands). The machine must run unattended-long, not demo-long.
+3. Structured triad sessions with invited participants, logged through the hub: this is the dataset the paper is written from.
 
-### VFCD week
+### November: finish, document, archive
 
-Bring: 3 cups plus at least 1 spare cup body and 1 spare insert, charged power banks plus spares, alcohol wipes (cups must be wiped between participants), your laptop with the hub, a printed copy of the brief's contracts, and a phone hotspot as backup Wi-Fi. The serial CSV fallback in `cup.ino` means a cup can be read over a USB cable if Wi-Fi dies.
+1. Documentation video and photography of the finished system to submission standard.
+2. Launch the standalone project website and 10-year archive (a budgeted deliverable), folding in the simulator, the process log, and rendered session data.
+3. A final showing for the school (R&I team, mentor, collaborators): the working triad, run like a rehearsal of a future exhibition. Keep the demo kit ready: spare cup body and insert, charged power banks, wipes, printed contracts, phone hotspot; the serial CSV fallback in `cup.ino` means a cup can be read over a USB cable if Wi-Fi dies.
+4. Final seed-funding report and the paper draft. The funded period closes 30 November; the machine, the dataset, the archive, and the draft are the deliverables.
 
 ## Command cheat sheet (run in this folder)
 

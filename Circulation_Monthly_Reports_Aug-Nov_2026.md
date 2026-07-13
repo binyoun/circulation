@@ -21,7 +21,7 @@ Each draft follows the RMIT SCD Seed Funding WIP template. Square brackets mark 
 |---|---|---|---|---|
 | 1 | Hardware procurement (ESP32, FSR, MAX30102, LED) | Complete | Bin Youn | All core components received and individually verified (June). |
 | 2 | Installation concept and spatial sketch | Complete | Bin Youn | Triadic interaction model, device form, and ambient layer established (June). |
-| 3 | Ethics application for public interaction data | Complete / In Progress | Bin Youn | Application submitted [date] July to RMIT ethics, covering anonymised grip-pressure and pulse-rhythm data collection at VFCD 2026. Approval expected [expected date]. Early submission protects the publication plan. |
+| 3 | Ethics application for participant interaction data | Complete / In Progress | Bin Youn | Application submitted [date] July to RMIT ethics, covering anonymised grip-pressure and pulse-rhythm data collection in structured studio sessions (October to November 2026). Approval expected [expected date]. Early submission protects the publication plan. |
 | 4 | Research tool and software activation | Complete | Bin Youn | Claude AI (Anthropic) research subscription, Flux.ai AI-assisted PCB design, and TouchDesigner licence activated [dates] July. All development tooling in place ahead of the August build phase; expenditure recorded on Workday within this period. |
 | 5 | Research assistant recruitment | Complete / In Progress | Bin Youn | Role posted via RMIT TALENTNET [date] July; [candidate identified / interviews held]; engagement begins 1 August through mid September, aligned with firmware development and installation. |
 | 6 | Sensor validation and simulation setup | In Progress | Bin Youn | Initial MAX30102 placement test conducted confirming the fingertip-well approach [adjust to actual finding]. Wokwi simulation project established for ESP32 interaction logic; recorded PPG datasets sourced for replay testing prior to hardware integration. |
@@ -34,13 +34,13 @@ July was designed as a preparation month with three administrative objectives, a
 
 First, the project's research infrastructure was activated. AI research subscriptions (Claude AI for research and development support, Flux.ai for AI-assisted PCB design) and the TouchDesigner licence were purchased in early July, ensuring the full software toolchain is in place before the intensive August build phase and that expenditure under budget lines 2 and 4 is recorded within this reporting period.
 
-Second, the ethics application covering public collection of anonymised physiological interaction data was submitted on [date]. This is the critical-path item for the publication plan, since both the target paper and the non-traditional research output depend on ethics-approved audience data from the VFCD exhibition. Submitting in July provides [X] weeks of lead time before the September exhibition.
+Second, the ethics application covering collection of anonymised physiological interaction data was submitted on [date]. This is the critical-path item for the publication plan, since both the target paper and the non-traditional research output depend on ethics-approved participant data from the structured triad sessions planned for October and November. Submitting in July provides [X] weeks of lead time before those sessions.
 
-Third, research assistant recruitment was completed via RMIT TALENTNET. The engagement has been scheduled for 1 August to mid September, a deliberate revision from the original September-October window, so that embedded systems expertise directly supports firmware development and installation rather than following the exhibition.
+Third, research assistant recruitment was completed via RMIT TALENTNET. The engagement has been scheduled for 1 August to mid September, a deliberate revision from the original September-October window, so that embedded systems expertise directly supports firmware development and fabrication rather than arriving after the core build.
 
 Technical groundwork also began: an initial sensor placement test [describe one-line result], and a Wokwi simulation environment was established for testing interaction logic against recorded PPG datasets before hardware integration.
 
-The project remains on schedule. August is the primary build month: firmware, the TouchDesigner hub, enclosure fabrication, and an internal pilot with approximately ten colleagues.
+The project remains on schedule. August is the primary build month: firmware, the sync hub, enclosure fabrication, and an internal pilot with approximately ten colleagues.
 
 ## 4. Expenditures (fill from Workday)
 | No | Item | Approved (VND) | Workday | Rate |
@@ -73,7 +73,7 @@ Unchanged: primary traditional target SIGGRAPH Asia 2027 Art Papers (draft Novem
 |---|---|---|---|---|
 | 1-5 | (Carried milestones) | Complete | | As reported in August. |
 | 6 | Sensor validation and signal quality study | Complete | Bin Youn / RA | Fingertip-well PPG placement validated: [one-line result, e.g. reliable pulse lock within X seconds for Y of Z testers]. Sealed-dome barometric sensing tested in enclosure iteration 2: [adopted / retained FSR primary]. |
-| 7 | Firmware state machine and TouchDesigner hub | Complete / In Progress | RA / Bin Youn / Patrick Hartono | Interaction states implemented (idle, reading, element lock, pairing, triadic sync, bloom). Cups communicate over OSC via Wi-Fi to the TouchDesigner system running Five Elements mapping; ambient layer driven via Art-Net. [State of completion.] |
+| 7 | Firmware state machine and sync hub | Complete / In Progress | RA / Bin Youn / Patrick Hartono | Interaction states implemented (idle, reading, element lock, pairing, triadic sync, bloom). Each cup computes its own Five Elements reading on-device; cups communicate over OSC via Wi-Fi to the sync hub, which republishes to TouchDesigner for the ambient layer. [State of completion.] |
 | 8 | Enclosure fabrication (two iterations) | Complete / In Progress | Bin Youn / RA | [Iteration 1 and 2 outcomes; material choice; wipeable sealed shells for public handling.] |
 | 9 | Internal pilot and calibration (approx. 10 staff) | Complete | All | [N] colleagues tested [M] grip styles; signal quality logged per style forming the calibration dataset; protocol rehearsed ahead of ethics-approved public collection. Key finding: [one line]. |
 | 10 | Dry-run installation | In Progress | All | Scheduled [date] early September in [RMIT studio space]; includes charging system, hygiene protocol, ambient calibration. |
@@ -85,7 +85,7 @@ Patrick Hartono led the sonic and temporal design of the state transitions and c
 ## 3. Project progress (200-300 words)
 August was the primary build month and the period of research assistant engagement. [Opening line on overall status.]
 
-Firmware development proceeded on schedule. The three devices now run the full interaction state machine, from individual reading through element lock to paired and triadic synchronisation, with a signal quality index that returns the cup to a neutral breathing state whenever pulse lock is lost, ensuring the installation never visibly fails in public. Synchronisation logic runs centrally in TouchDesigner, receiving OSC from all three cups and driving both the cup colour states and the ambient room layer via Art-Net. Centralising this logic proved [observation on debuggability].
+Firmware development proceeded on schedule. The three devices now run the full interaction state machine, from individual reading through element lock to paired and triadic synchronisation, with a signal quality index that returns the cup to a neutral breathing state whenever pulse lock is lost, ensuring the installation never visibly fails in use. Each cup computes its own reading on-device; collective synchronisation runs in the sync hub, which receives OSC from all three cups and republishes to TouchDesigner for the ambient room layer. Keeping the cups self-sufficient proved [observation on robustness/debuggability].
 
 Enclosure fabrication completed two iterations. [Two to three sentences: materials, the sealed-dome barometric test result, final shell choice, hygiene considerations.]
 
@@ -93,7 +93,7 @@ The internal pilot engaged [N] RMIT colleagues across [M] defined grip styles. [
 
 [Ethics status sentence.]
 
-September is deployment month: dry-run installation in week one, transport and installation at the VFCD venue in weeks two to three, and public exhibition with workshop 21 to 27 September.
+September is integration month: the triad completed and synchronised through the hub, enclosure iteration two, and rehearsal sessions with real triads in the RMIT studio, preparing the protocol for the ethics-approved data sessions in October and November.
 
 ## 4-6. [Expenditure table as above; Challenges from actuals; Publication plan unchanged, add: figure shot list prepared for October documentation.]
 
@@ -105,26 +105,26 @@ September is deployment month: dry-run installation in week one, transport and i
 
 | No. | Milestone | Status | PIC | Description of impact / justification |
 |---|---|---|---|---|
-| 10 | Dry-run installation | Complete | All | Conducted [date]; [one-line outcome; adjustments made]. |
-| 11 | VFCD 2026 exhibition and workshop | Complete | All | Exhibited 21 to 27 September within VFCD 2026 [venue]. [Estimated visitors] visitors; [N] complete triadic sessions; public workshop delivered [date] with [N] participants. Ethics-approved interaction data collected across [N] sessions. |
-| 12 | Documentation and data analysis | In Progress | Bin Youn / Renusha Athugala | Daily exhibition photography complete; professional video shoot scheduled [date] October; interaction data analysis begun. |
+| 10 | Studio installation | Complete | All | Conducted [date]; [one-line outcome; adjustments made]. |
+| 11 | Triad integration and rehearsal sessions | Complete | All | Three devices synchronised through the hub in the RMIT studio; [N] complete triadic rehearsal sessions with [N] participants; session protocol finalised for the ethics-approved October and November data sessions. |
+| 12 | Documentation and data analysis | In Progress | Bin Youn / Renusha Athugala | Build photography ongoing; professional video shoot scheduled [date] November on the finished system; interaction data pipeline verified on rehearsal logs. |
 
 ## 2. Contribution from listed partners
-[Patrick: on-site technical operation, sound/ambient calibration. Renusha: workshop co-delivery, participant observation fieldnotes.]
+[Patrick: technical operation and sound/ambient calibration during rehearsals. Renusha: session protocol design, participant observation fieldnotes.]
 
 ## 3. Project progress (200-300 words)
-The project reached its central milestone: public exhibition at VFCD 2026, 21 to 27 September, in alignment with Circular Design Week.
+The project reached its central build milestone: the full triad, three devices synchronised through the hub, running in the studio with real participants.
 
-[Paragraph: exhibition account. Visitor numbers, triadic session counts, workshop outcome, memorable participant responses (two or three anonymised quotes noted in fieldnotes for the paper), operational notes such as battery rotation and hygiene protocol performance across seven days.]
+[Paragraph: integration account. Rehearsal session counts, memorable participant responses (two or three anonymised quotes noted in fieldnotes for the paper), operational notes such as battery rotation and hygiene protocol performance across long sessions.]
 
-[Paragraph: data. Sessions logged, signal quality overview, early observed patterns in synchronisation behaviour, element distribution across participants.]
+[Paragraph: data. Rehearsal sessions logged, signal quality overview, early observed patterns in synchronisation behaviour, element distribution across participants.]
 
 [Paragraph: any technical incidents and fixes, honestly stated, and what they contribute to the paper's design implications.]
 
-October focuses on outputs: professional video documentation to international submission standard, full interaction data analysis, launch of the project website as the long-term archive, and the agreed paper outline with all three authors.
+October focuses on completion and evidence: the ambient room layer (TouchDesigner), endurance testing of the full system, and the ethics-approved structured data sessions that form the paper's empirical basis.
 
 ## 5. Challenges and Solutions
-[From actuals. Candidates: venue power/lighting conditions, participant throughput, ambient layer feasibility at venue, weather/logistics.]
+[From actuals. Candidates: studio access and scheduling, participant recruitment for sessions, signal quality across diverse hands, ambient layer calibration.]
 
 ## 6. Publication plan
 On track. Fieldnotes, participant reflections, and interaction logs from [N] sessions now constitute the empirical basis for the SIGGRAPH Asia 2027 Art Papers submission. Documentation shoot [date] produces the Ars Electronica 2027 dossier material.
@@ -141,7 +141,7 @@ On track. Fieldnotes, participant reflections, and interaction logs from [N] ses
 | 13 | Research outputs | In Progress | All | Full paper draft [X]% complete targeting SIGGRAPH Asia 2027 Art Papers; Ars Electronica 2027 dossier assembled; Tier 1 funding dossier in preparation. |
 
 ## 3. Project progress (200-300 words)
-October converted the exhibition into research outputs.
+October converted the finished system into research evidence: the room layer running, endurance proven, and the structured data sessions completed.
 
 [Paragraph: documentation. Video shoot outcome, photographic set, website launch with archive structure.]
 
