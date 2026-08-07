@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Circulation",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": 130, "left": -220, "attrs": { "value": "0" } },
+    { "type": "chip-max30102", "id": "ppg1", "top": -170, "left": -220, "attrs": {} },
+    { "type": "wokwi-led-ring", "id": "ring1", "top": -210, "left": 220, "attrs": { "pixels": "16" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "pot1:GND", "esp:GND.1", "black", [] ],
+    [ "pot1:VCC", "esp:3V3", "red", [] ],
+    [ "pot1:SIG", "esp:34", "green", [] ],
+
+    [ "ppg1:GND", "esp:GND.1", "black", [] ],
+    [ "ppg1:VCC", "esp:3V3", "red", [] ],
+    [ "ppg1:SDA", "esp:21", "#8f4814", [] ],
+    [ "ppg1:SCL", "esp:22", "blue", [] ],
+
+    [ "ring1:GND", "esp:GND.2", "black", [] ],
+    [ "ring1:VCC", "esp:5V", "red", [] ],
+    [ "ring1:DIN", "esp:5", "green", [] ]
+  ],
+  "dependencies": {}
+}

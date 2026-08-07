@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/cup.ino.bin'
+elf = 'build/cup.ino.elf'

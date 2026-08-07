@@ -28,8 +28,19 @@
     <header>
       <h1>circulation, process log</h1>
       <p class="sub">cupping, colour, and collective sensing &middot; SCD Seed Funding 2026</p>
-      <nav><a href="./index.html">the system</a> &middot; <a href="./manual.html">manual</a></nav>
+      <nav><a href="./index.html">the system</a> &middot; <a href="./sim.html">physical computing sim</a> &middot; <a href="./manual.html">manual</a></nav>
     </header>
+
+    <div class="entry">
+      <div class="date">2026-08-07 &middot; week 5</div>
+      <h2>A body of noise, and a circuit with nothing plugged in</h2>
+      <p>Met Khang: the physical prototype arrives next Friday (14 Aug). Two ways to keep working before it does, both without touching a soldering iron.</p>
+      <ul>
+        <li>A <b>physical computing simulation</b> stands between a body and the engine the way the real cup does. <a href="./sim.html">Open it</a>: a grip and a heart rate pass through simulated FSR and MAX30102 sensor behaviour first, raw ADC counts, calibration bounds, an IR contact threshold, beat jitter, mirroring <code>cup.ino</code>'s exact constants. Fault toggles per cup (loose palm seal, fidgeting, never calibrated) rehearse the bench brief's open questions before there is a bench.</li>
+        <li>A <b>Wokwi circuit simulation</b> (<code>wokwi/</code>) runs <code>cup.ino</code> itself, completely unmodified, against a virtual ESP32, LED ring, and pulse sensor, no hardware required. It validates the firmware's own logic, not the interaction; the bench experiments (a real hand, a real seal) still decide the design.</li>
+      </ul>
+      <p class="muted">Shared rendering (the cup panel, the flow layer, the presence/afterglow mark) moved into <code>src/cupView.ts</code> so the idealised system and the noisy one stay visibly the same artwork, disagreeing only about how clean the world is.</p>
+    </div>
 
     <div class="entry">
       <div class="date">2026-07-13 &middot; week 2</div>

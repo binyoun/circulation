@@ -20,6 +20,9 @@ Rule: if you change the mapping, change it in `src/fiveElements.ts` AND `cup.ino
 
 - `index.html` is the live simulator page: three virtual cups, the flow layer, the room.
 - `src/main.ts` is the simulator's code: presence, afterglow marks, light travelling cup to cup, sliders. Interaction tuning happens here first, hardware second.
+- `src/cupView.ts` is the rendering shared by `index.html` and `sim.html`: the cup panel, colour helpers, the flow layer, and the presence/afterglow display state. If you touch how a cup is drawn, change it here once for both pages.
+- `sim.html` / `src/sim.ts` is the physical computing simulation: the same three-cup stage, but a grip and a heart rate pass through `src/sensorSim.ts` (simulated FSR/MAX30102 sensor behaviour) before reaching the engine, instead of clean sliders. Fault toggles per cup (loose palm seal, fidgeting, never calibrated) rehearse the open questions from `hardware/TECHNICIAN_BRIEF.txt`.
+- `src/sensorSim.ts` is the sensor model: raw ADC counts, FSR calibration bounds, the MAX30102 IR contact threshold and confidence formula, and beat-to-beat jitter, mirroring `cup.ino`'s exact constants so tuning it is tuning the firmware's constants.
 - `log.html` is the process log. Add an entry every week you build something; it is the grant report, the paper's process documentation, and the curator-facing story in one file.
 - `.github/workflows/deploy.yml` deploys automatically: every push to main rebuilds the site at https://binyoun.github.io/circulation/ in about 30 seconds. You never deploy manually.
 
@@ -28,6 +31,7 @@ Rule: if you change the mapping, change it in `src/fiveElements.ts` AND `cup.ino
 - `hardware/cup/cup.ino` is the firmware you will flash onto each ESP32. The config block at the top (CUP_ID, Wi-Fi, hub address, pins, FSR calibration, PRESENCE, MARK_FADE_S) is the only part you edit per cup.
 - `hardware/cup/README.md` is the wiring and library guide for the firmware.
 - `hardware/TECHNICIAN_BRIEF.txt` is the meeting document: build direction (real cups, printed insert), sensors, parts list, contracts, safety line. Copy-paste ready, single-line paragraphs.
+- `wokwi/` is a circuit simulation of `cup.ino` itself: a virtual ESP32 + FSR + LED ring (see `wokwi/README.md` for what's real vs. a stand-in), so the firmware's sensor-to-LED logic can be exercised with no hardware, before or alongside a real build.
 
 ### The collective layer (after three cups exist)
 

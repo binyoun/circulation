@@ -6,6 +6,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './index.html',
+        sim: './sim.html',
         log: './log.html',
         manual: './manual.html',
       },

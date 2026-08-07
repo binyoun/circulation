@@ -72,7 +72,7 @@
     <header>
       <h1>circulation, the manual</h1>
       <p class="sub">cupping, colour, and collective sensing &middot; what every file is and what to do with it</p>
-      <nav><a href="./index.html">the system</a> &middot; <a href="./log.html">process log</a></nav>
+      <nav><a href="./index.html">the system</a> &middot; <a href="./sim.html">physical computing sim</a> &middot; <a href="./log.html">process log</a></nav>
     </header>
 
     <p class="lead">One page for the whole build, from simulator tuning to the end of the funded period (30 November 2026). The project does not target an exhibition deadline; the whole window goes into building the machine fully. Read it top to bottom once; after that, jump to the phase you are in.</p>
@@ -133,6 +133,9 @@
       <p class="why">Every push to main auto-deploys to <a href="https://binyoun.github.io/circulation/">binyoun.github.io/circulation</a> in about 30 seconds. You never deploy manually.</p>
       <div class="file"><code>index.html</code><span>the live simulator page: three virtual cups, the flow layer, the room</span></div>
       <div class="file"><code>src/main.ts</code><span>the simulator's code: presence, afterglow marks, light travelling cup to cup, sliders. Tune the interaction here first, hardware second</span></div>
+      <div class="file"><code>src/cupView.ts</code><span>the rendering pieces shared by <code>index.html</code> and <code>sim.html</code>: the cup panel, colour helpers, the flow layer, and the presence/afterglow display state</span></div>
+      <div class="file"><code>sim.html</code> / <code>src/sim.ts</code><span>the physical computing simulation: the same three cups, but a grip and a heart rate pass through simulated FSR/MAX30102 sensor behaviour (noise, calibration, contact dropout) before reaching the engine</span></div>
+      <div class="file"><code>src/sensorSim.ts</code><span>the sensor model sim.html runs: mirrors cup.ino's raw ADC, calibration bounds, IR contact threshold, and beat jitter, with fault toggles for a loose palm seal, a fidgeting hand, and an uncalibrated cup</span></div>
       <div class="file"><code>log.html</code><span>the process log. One entry per build week: grant report, paper documentation, and curator-facing story in one file</span></div>
       <div class="file"><code>.github/workflows/deploy.yml</code><span>the auto-deploy</span></div>
     </div>
@@ -142,6 +145,7 @@
       <div class="file"><code>hardware/cup/cup.ino</code><span>the firmware you flash onto each ESP32. The config block at the top (CUP_ID, Wi-Fi, hub address, pins, calibration, PRESENCE, MARK_FADE_S) is the only part edited per cup</span></div>
       <div class="file"><code>hardware/cup/README.md</code><span>wiring and library guide</span></div>
       <div class="file"><code>hardware/TECHNICIAN_BRIEF.txt</code><span>the meeting document: real cups + printed insert, sensors, parts list, contracts, safety line. Copy-paste ready</span></div>
+      <div class="file"><code>wokwi/</code><span>a circuit simulation of <code>cup.ino</code> itself (ESP32 + FSR + LED ring, no hardware required): validates firmware logic before or alongside a real build</span></div>
     </div>
 
     <div class="layer l-hub">
