@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circulation Sea Table</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a working drawing sheet. Live top view + controls first, then the senses, the centre piece
+   drawings, the cup band, and the schedule. Single dark world on purpose: a light installation is
+   judged by glow against shadow. */
+:root {
+  color-scheme: dark;
+  --ground: #0c1013;      /* room in shadow */
+  --sheet: #12181c;       /* table surface */
+  --line: #2a343a;        /* drafting line */
+  --ink: #dfe5e3;         /* primary text */
+  --ink-soft: #8c9a98;    /* secondary text, dimensions */
+  --accent: #e0b23c;      /* earth: the centre, the sea */
+  --display: "Gowun Batang", Georgia, serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 64px; }
+header { display: grid; gap: 10px; max-width: 70ch; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 0; text-wrap: balance; }
+h3 { font-size: 13px; font-weight: 600; margin: 0; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--ink-soft); font-size: 16px; }
+
+section { display: grid; gap: 18px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head p { color: var(--ink-soft); }
+
+/* live view */
+.live { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(300px, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .live { grid-template-columns: 1fr; } }
+.stage { position: relative; border: 1px solid var(--line); border-radius: 4px; background: var(--ground); }
+.stage canvas { display: block; width: 100%; height: auto; }
+.stage .tag { position: absolute; left: 12px; top: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: .06em; }
+
+.panel { display: grid; gap: 22px; }
+.readout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.readout div { background: var(--sheet); padding: 10px 12px; display: grid; gap: 2px; }
+.readout b { font-family: var(--mono); font-weight: 500; font-size: 18px; font-variant-numeric: tabular-nums; }
+.readout span { font-size: 11px; color: var(--ink-soft); letter-spacing: .05em; text-transform: uppercase; }
+.group { display: grid; gap: 8px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+button {
+  font: 500 13px var(--body); color: var(--ink); background: var(--sheet);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; cursor: pointer;
+}
+button:hover { border-color: var(--ink-soft); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+.cups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 420px) { .cups { grid-template-columns: 1fr; } }
+.cup { display: grid; gap: 7px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--sheet); }
+.cup-head { display: flex; justify-content: space-between; align-items: center; }
+.cup-head strong { font-family: var(--display); font-size: 18px; }
+.swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); }
+.finger { display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: center; }
+.finger i { font-style: normal; font-size: 12px; font-weight: 600; }
+input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; min-width: 0; }
+.hint { font-size: 12px; color: var(--ink-soft); }
+
+/* figures */
+.figure { border: 1px solid var(--line); border-radius: 4px; background: var(--ground); overflow-x: auto; }
+.figure canvas, .figure svg { display: block; width: 100%; height: auto; min-width: 620px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px 28px; }
+.notes div { display: grid; gap: 4px; }
+.notes p { color: var(--ink-soft); font-size: 14px; }
+
+/* tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; background: var(--sheet); }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.sense { font-family: var(--display); font-size: 17px; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+.sim { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; margin-left: 6px; vertical-align: 2px; }
+.sim.no { color: var(--ink-soft); }
+
+.moments { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.moment { display: grid; gap: 6px; align-content: start; padding: 14px 16px; border: 1px solid var(--line); border-radius: 4px; background: var(--sheet); }
+.moment strong { font-family: var(--display); font-size: 18px; }
+.moment p { font-size: 14px; color: var(--ink-soft); }
+
+.flags { display: grid; gap: 10px; padding: 0; margin: 0; list-style: none; }
+.flags li { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 4px; background: var(--sheet); }
+.flags .k { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+@media (max-width: 480px) { .flags li { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Circulation · design for production · 23 Oct 2026 · <a href="./" style="color:inherit">back to the system</a></div>
+    <h1>The sea table: from fingertip to centre</h1>
+    <p class="lede">Three 7 cm cups sit in a round table. Each finger pad lights its element at once. Light then steps inward along a vessel, and the three streams orbit in a field of acrylic rods. The orbit tightens as the three hands come into agreement, then fuses at the core. Press the sliders, play the demo, and turn the sound on.</p>
+  </header>
+
+  <section>
+    <div class="live">
+      <div class="stage">
+        <span class="tag">TOP VIEW · TABLE Ø 100 cm · LIVE</span>
+        <canvas id="top" width="800" height="800" aria-label="Animated top view of the table, three cups, vessels and the central rod field"></canvas>
+      </div>
+      <div class="panel">
+        <div class="readout">
+          <div><b id="r-sync">0.00</b><span>Agreement</span></div>
+          <div><b id="r-held">0 / 3</b><span>Hands</span></div>
+          <div><b id="r-state">Apart</b><span>Centre</span></div>
+        </div>
+        <div class="group">
+          <h3>Scenarios</h3>
+          <div class="presets" id="presets"></div>
+          <p class="hint">Demo cycles the scenarios every 10 s. Moving a slider stops it.</p>
+        </div>
+        <div class="group">
+          <h3>Senses</h3>
+          <div class="presets"><button id="sound" aria-pressed="false">Turn sound on</button></div>
+          <p class="hint">With sound on, listen for the beating between the three cups slowing down as agreement rises. A ring around a cup is the buzz that person feels when someone else's light reaches the centre. A faint ring on a pad means another person is pressing that finger.</p>
+        </div>
+        <div class="group" id="cups-group">
+          <h3>Finger pressure per cup</h3>
+          <div class="cups" id="cups"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Sensing together</h2>
+      <p>Each sense has a part you get alone and a part that only exists when two or three people hold at once. Sight, sound, touch and breath all carry the same message: the others are here, and you are moving toward each other.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sense</th><th>You alone</th><th>With the others</th><th>Hardware</th></tr></thead>
+        <tbody>
+          <tr><td class="sense">Sight</td><td>Your pads light their element. Your dome shows your blended colour.</td><td><strong>Ghost touch:</strong> when another person presses their index finger, the index pad on your cup glows faintly, so you see their hand on your own cup. Strands orbit and fuse in the centre.<span class="sim">in sim</span></td><td>Already in the pixel count.</td></tr>
+          <tr><td class="sense">Sound</td><td>Each finger sounds its note from the five-tone scale: Earth C, Metal D, Wood E, Fire G, Water A. These are the classical gong, shang, jue, zhi and yu, which have long been paired with the five elements.</td><td><strong>Beating into unison:</strong> the three cups play the same notes slightly out of tune, so they beat against each other. As agreement rises the detuning closes and the beating slows to stillness. At the bloom a low drone joins.<span class="sim">in sim</span></td><td><strong>Patrick's part.</strong> The sim's tones are a placeholder sketch. Patrick's sound design replaces them, driven by the messages below.</td></tr>
+          <tr><td class="sense">Touch</td><td>The give of the pad under each finger.</td><td><strong>Feeling them arrive:</strong> a short soft buzz in your cup each time another person's light reaches the centre. You feel the others without looking.<span class="sim">in sim, as a ring</span></td><td>One 10 mm coin vibration motor per cup.</td></tr>
+          <tr><td class="sense">Breath</td><td>Your dome breathes at 6 breaths per minute.</td><td><strong>One shared breath:</strong> all three domes and the core breathe in the same phase. People tend to fall into it, and squeeze rhythm then becomes part of agreement.<span class="sim">in sim</span></td><td>None.</td></tr>
+          <tr><td class="sense">Warmth</td><td>None.</td><td>The cups warm slightly at the bloom, echoing fire cupping. Optional.<span class="sim no">not in sim</span></td><td>5 V heating film with a thermal cut-off. I'd leave it out unless there's time.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="moments">
+      <div class="moment"><strong>Waiting at the shore</strong><p>One person alone sees their light travel inward and then circle the outer rods, unable to go further. The centre opens only when a second hand arrives. This invites strangers to join.<span class="sim">in sim</span></p></div>
+      <div class="moment"><strong>Same finger, same moment</strong><p>When all three press hardest with the same finger, that element washes the whole table for a few seconds. It's a call people discover together and then repeat on purpose. Try "Still water".<span class="sim">in sim</span></p></div>
+      <div class="moment"><strong>Letting go together</strong><p>When all three release within about two seconds of each other, the centre makes one last slow bloom and fades. That glow is the session's mark, like the afterglow on each cup.<span class="sim no">not in sim</span></p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Sound brief for Patrick</h2>
+      <p>Patrick owns the sound. The hub sends everything the sound system needs as OSC on port 9001, next to TouchDesigner on 9000. Any sound engine that reads OSC can use it: Max, Pure Data, SuperCollider or TouchDesigner itself.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Address</th><th>Values</th><th>Rate</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td class="n">/circulation/cup/&lt;id&gt;/fingers</td><td class="n">5 floats, 0–1</td><td class="n">30 Hz</td><td>Pressure per finger: thumb (Wood), index (Fire), middle (Earth), ring (Metal), little (Water). id is 0, 1 or 2.</td></tr>
+          <tr><td class="n">/circulation/cup/&lt;id&gt;/held</td><td class="n">int 0 / 1</td><td class="n">on change</td><td>Someone is holding this cup.</td></tr>
+          <tr><td class="n">/circulation/sync</td><td class="n">float 0–1</td><td class="n">30 Hz</td><td>Agreement, already smoothed. 0 is apart, about 0.55 is braiding, above 0.85 is the bloom.</td></tr>
+          <tr><td class="n">/circulation/bloom</td><td class="n">float 0–1</td><td class="n">30 Hz</td><td>How far the three colours have fused at the core.</td></tr>
+          <tr><td class="n">/circulation/breath</td><td class="n">float 0–1</td><td class="n">30 Hz</td><td>Phase of the shared breath (10 s cycle), so sound can breathe with the light.</td></tr>
+          <tr><td class="n">/circulation/arrive</td><td class="n">int cup id</td><td class="n">event</td><td>A pulse of light from that cup reached the centre. The same moment as the buzz in the other cups.</td></tr>
+          <tr><td class="n">/circulation/flood</td><td class="n">string element</td><td class="n">event</td><td>All three pressed hardest with the same finger.</td></tr>
+          <tr><td class="n">/circulation/release</td><td class="n">int 1</td><td class="n">event</td><td>All three let go within about 2 s of each other: the closing bloom.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <div><h3>Fixed for sound</h3><p>The interaction rules: what agreement means, when the flood and the closing bloom happen, and the 10 s shared breath. Sound should reinforce these moments, not add new ones.</p></div>
+      <div><h3>Patrick decides</h3><p>Tuning and timbre. Whether the five-tone scale stays. One speaker in the light box or one per cup. Whether the out-of-tune beating idea is kept.</p></div>
+      <div><h3>Agree together</h3><p>Volume ceiling for a quiet room, and what plays when nobody is holding. The sim uses silence.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Centre piece, exploded</h2>
+      <p>The light box is a 26 cm drum set into the table, with the lid flush to the tabletop. It has five layers, top to bottom. The rods drop into sockets in the lid, pass through a black baffle, and stop just above their own pixel. The rod colours show a moment of medium agreement: three strands orbiting on the middle ring.</p>
+    </div>
+    <div class="figure" id="exploded"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Socket and mounting details</h2>
+      <p>Left: one rod socket at 6× scale, which is where most of the light is won or lost. Right: a half-section through the table edge showing how the drum hangs from below and the vessel enters it.</p>
+    </div>
+    <div class="figure" id="details"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Section through cups A and B</h2>
+      <p>Drawn to scale. Rods rise toward the centre, so the shared light is the highest point but stays below a seated person's eye line. The three people can still see each other across the table.</p>
+    </div>
+    <div class="figure"><canvas id="elev" width="1100" height="440" aria-label="Scaled section showing cups, light box and rod heights"></canvas></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Cup pad band, unrolled</h2>
+      <p>Ø 7 cm gives a 22.0 cm circumference, so five pads sit at a 4.4 cm pitch. The thumb-to-little-finger order follows the generating cycle. A clear 3 mm rod in each groove carries the pad's light down to the table.</p>
+    </div>
+    <div class="figure" id="band"></div>
+    <div class="notes">
+      <div><h3>Pad</h3><p>About 2.2 × 2.6 cm oval, one FSR behind each. One NeoPixel just behind the pad lights both the pad and the top of its groove rod.</p></div>
+      <div><h3>Groove rod</h3><p>3 mm clear acrylic, sanded so it glows along its length. Pad ring printed in opaque black PETG so the five channels don't bleed into each other.</p></div>
+      <div><h3>Dome</h3><p>White or translucent print, lit by a 7-LED jewel. Shows the hand's blended colour and breathes at 6 per minute. A coin vibration motor sits under the dome.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Light, sound and rod schedule</h2>
+      <p>Every light source is a single addressable pixel, so one ESP32 in the table can drive all of it from one data line.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Part</th><th>Count</th><th>Rod</th><th>Pixels</th><th>Does</th></tr></thead>
+        <tbody>
+          <tr><td>Finger pad + groove</td><td class="n">5 × 3</td><td class="n">Ø3 mm × cup height</td><td class="n">15</td><td>Instant, individual. Element colour, brightness follows pressure. Also shows ghost touch.</td></tr>
+          <tr><td>Dome</td><td class="n">3</td><td class="n">—</td><td class="n">21 (3 × jewel)</td><td>The hand's blended colour, breathing in shared phase.</td></tr>
+          <tr><td>Merge node (5 → 1)</td><td class="n">3</td><td class="n">—</td><td class="n">3</td><td>Five tributaries become one vessel at the cup's seat.</td></tr>
+          <tr><td>Vessel nodes</td><td class="n">3 × 3</td><td class="n">Ø4 → 6 → 8 mm, 6–8 cm segments</td><td class="n">9</td><td>Light steps inward node by node, about 5 s from cup to centre.</td></tr>
+          <tr><td>Outer ring, Ø 22 cm</td><td class="n">14</td><td class="n">Ø4 mm × 8 cm</td><td class="n">14</td><td>Far orbit: three separate strands.</td></tr>
+          <tr><td>Middle ring, Ø 14 cm</td><td class="n">10</td><td class="n">Ø5 mm × 15 cm</td><td class="n">10</td><td>Strands braid as agreement rises.</td></tr>
+          <tr><td>Inner ring, Ø 7 cm</td><td class="n">6</td><td class="n">Ø6 mm × 22 cm</td><td class="n">6</td><td>Tight orbit.</td></tr>
+          <tr><td>Core</td><td class="n">1</td><td class="n">Ø12 mm × 30 cm</td><td class="n">7 (jewel)</td><td>The bloom: one fused colour.</td></tr>
+          <tr><td>Vibration motor</td><td class="n">3</td><td class="n">—</td><td class="n">—</td><td>10 mm coin motor in each cup, driven through a small transistor.</td></tr>
+          <tr><td>Speaker + amp</td><td class="n">TBC</td><td class="n">—</td><td class="n">—</td><td>Patrick specifies. Space is reserved in the service tray, behind a grille in the drum wall.</td></tr>
+          <tr><td><strong>Total</strong></td><td class="n">31 rods</td><td></td><td class="n"><strong>85</strong></td><td>5 V 4 A supply with brightness capped in firmware.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Design notes and open questions</h2></div>
+    <ul class="flags">
+      <li><span class="k">Changed</span><span>The table is <strong>100 cm</strong>, not 75–80 cm. With 7 cm cups seated 10 cm from the edge and a 26 cm light box, a smaller table leaves vessels only about 8 cm long, which is too short to see light travel. At 100 cm each vessel is about 23 cm.</span></li>
+      <li><span class="k">Changed</span><span><strong>One loose pixel under each rod</strong> (cut WS2812B strip or single-pixel boards) instead of a concentric ring set. Off-the-shelf ring sets top out near 10 cm across, too small for a 22 cm rod circle.</span></li>
+      <li><span class="k">No pulse</span><span>Agreement here comes from how alike the three hands' five-finger patterns are, plus a bonus when the dominant elements form a generating chain. On hardware I'd add a third term: how closely the squeeze rhythms match the shared breath.</span></li>
+      <li><span class="k">Need</span><span>The cup's <strong>height</strong> from the CAD. The section assumes 7.5 cm.</span></li>
+      <li><span class="k">Decide</span><span>Seated (table 74 cm) or standing (90–95 cm). The section assumes seated, with eyes about 44 cm above the tabletop.</span></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(() => {
+  // Thumb to little finger follows the generating cycle: wood, fire, earth, metal, water.
+  // Tones are the five-tone scale paired with each element: jue E, zhi G, gong C, shang D, yu A.
+  const EL = [
+    { k: 'Wood',  finger: 'Thumb',  organ: 'Liver',   rgb: [95, 174, 106], hz: 329.63 },
+    { k: 'Fire',  finger: 'Index',  organ: 'Heart',   rgb: [229, 84, 75],  hz: 392.00 },
+    { k: 'Earth', finger: 'Middle', organ: 'Stomach', rgb: [224, 178, 60], hz: 261.63 },
+    { k: 'Metal', finger: 'Ring',   organ: 'Lung',    rgb: [238, 241, 244], hz: 293.66 },
+    { k: 'Water', finger: 'Little', organ: 'Kidney',  rgb: [74, 128, 196], hz: 440.00 },
+  ];
+  const NAMES = ['A', 'B', 'C'];
+
+  // Geometry in cm.
+  const TABLE_R = 50, CUP_R = 3.5, CUP_DIST = 40, BOX_R = 13;
+  const MERGE_D = 34.5, ENTRY_D = 14;
+  const RINGS = [
+    { r: 11,  n: 14, h: 8,  d: 0.4 },
+    { r: 7,   n: 10, h: 15, d: 0.5 },
+    { r: 3.5, n: 6,  h: 22, d: 0.6 },
+  ];
+  const CORE = { h: 30, d: 1.2 };
+  const CUP_ANG = [-Math.PI / 2, Math.PI / 6, Math.PI * 5 / 6];
+  const NODE_S = [0, 0.25, 0.5, 0.75, 1];
+  const TRAVEL = 5; // seconds, cup to centre
+  const BREATH = 10; // seconds per breath, shared by all domes and the core
+
+  const PRESETS = [
+    { name: 'Rest', p: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]] },
+    { name: 'Alone', p: [[.3,.8,.4,.2,.1],[0,0,0,0,0],[0,0,0,0,0]] },
+    { name: 'Three strangers', p: [[.9,.2,.1,.1,.1],[.1,.2,.1,.3,.9],[.2,.9,.2,.1,.1]] },
+    { name: 'Generating chain', p: [[.85,.3,.2,.1,.1],[.3,.85,.3,.1,.1],[.1,.3,.85,.3,.1]] },
+    { name: 'Converging', p: [[.4,.55,.75,.45,.3],[.3,.5,.85,.5,.35],[.45,.4,.8,.4,.35]] },
+    { name: 'Still water', p: [[.2,.1,.3,.4,.9],[.2,.1,.3,.45,.85],[.25,.1,.3,.4,.9]] },
+  ];
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- state ----------
+  const START = 2;
+  const cur = PRESETS[START].p.map(r => r.slice());
+  let target = PRESETS[START].p.map(r => r.slice());
+  let demo = !reduced, demoIdx = START, demoT = 0;
+  let sync = 0, t = 0, fuse = 0, flood = 0, floodEl = 2;
+  const pulses = [[], [], []];
+  const spawnT = [0, 0, 0];
+  const energy = [0, 0, 0];
+  const ripple = [0, 0, 0], rippleCol = [[0,0,0],[0,0,0],[0,0,0]];
+
+  // ---------- engine ----------
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+  const smooth = (a, b, x) => { const u = clamp((x - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); };
+
+  function cupReading(p) {
+    let sum = 0; const w = p.map(v => { const q = v * v; sum += q; return q; });
+    const peak = Math.max(...p);
+    if (peak < 0.12) return { held: false, rgb: [0, 0, 0], dom: -1, level: 0 };
+    const rgb = [0, 0, 0]; let dom = 0;
+    w.forEach((q, i) => { const k = q / sum; for (let c = 0; c < 3; c++) rgb[c] += EL[i].rgb[c] * k; if (q > w[dom]) dom = i; });
+    return { held: true, rgb, dom, level: peak };
+  }
+
+  function cosine(a, b) {
+    let d = 0, na = 0, nb = 0;
+    for (let i = 0; i < 5; i++) { d += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
+    return d / Math.sqrt(na * nb || 1);
+  }
+
+  function chainScore(doms) {
+    const held = doms.filter(d => d >= 0);
+    if (held.length < 2) return 0;
+    let best = 1;
+    const ext = (path) => {
+      best = Math.max(best, path.length);
+      const tip = held[path[path.length - 1]];
+      held.forEach((e, j) => { if (!path.includes(j) && (tip + 1) % 5 === e) ext([...path, j]); });
+    };
+    held.forEach((_, j) => ext([j]));
+    return (best - 1) / (held.length - 1);
+  }
+
+  function syncTarget(reads) {
+    const idx = reads.map((r, i) => r.held ? i : -1).filter(i => i >= 0);
+    if (idx.length < 2) return 0;
+    let s = 0, n = 0;
+    for (let a = 0; a < idx.length; a++) for (let b = a + 1; b < idx.length; b++) { s += cosine(cur[idx[a]], cur[idx[b]]); n++; }
+    const shape = smooth(0.55, 0.98, s / n);
+    const chain = chainScore(reads.map(r => r.dom));
+    return clamp(0.8 * shape + 0.2 * chain, 0, 1) * (idx.length / 3);
+  }
+
+  // ---------- geometry helpers ----------
+  const polar = (ang, d) => [Math.cos(ang) * d, Math.sin(ang) * d];
+  function vesselPoint(ci, s) {
+    const a = CUP_ANG[ci], d = MERGE_D + (ENTRY_D - MERGE_D) * s;
+    const off = Math.sin(s * Math.PI * 2) * 2.2;
+    return [Math.cos(a) * d - Math.sin(a) * off, Math.sin(a) * d + Math.cos(a) * off];
+  }
+  function padPos(ci, i) {
+    const inward = CUP_ANG[ci] + Math.PI;
+    const a = inward + (i - 2) * (2 * Math.PI / 5);
+    const [cx, cy] = polar(CUP_ANG[ci], CUP_DIST);
+    return [cx + Math.cos(a) * CUP_R, cy + Math.sin(a) * CUP_R];
+  }
+  const rods = [];
+  RINGS.forEach((ring, ri) => {
+    for (let k = 0; k < ring.n; k++) {
+      const a = (k / ring.n) * Math.PI * 2 + ri * 0.2;
+      rods.push({ ri, a, r: ring.r, x: Math.cos(a) * ring.r, y: Math.sin(a) * ring.r, d: ring.d, rgb: [0, 0, 0] });
+    }
+  });
+  const core = { ri: 3, r: 0, a: 0, x: 0, y: 0, d: CORE.d, rgb: [0, 0, 0] };
+  const ringGlow = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
+
+  // Light on one rod from strands of the given colours, at a given orbit radius and phase.
+  function strandLight(rod, strands, strandR) {
+    const out = [0, 0, 0];
+    for (const st of strands) {
+      if (st.e < 0.01) continue;
+      const da = Math.abs(((rod.a - st.phase) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI);
+      const ang = rod.r === 0 ? 1 : Math.exp(-(da * da) / (2 * 0.45 * 0.45));
+      const rad = Math.exp(-((rod.r - strandR) ** 2) / (2 * 2.4 * 2.4));
+      const v = st.e * ang * rad;
+      for (let j = 0; j < 3; j++) out[j] += st.rgb[j] * v;
+    }
+    return out.map(v => Math.min(255, v));
+  }
+
+  // ---------- update ----------
+  let reads = cur.map(cupReading);
+  function step(dt) {
+    t += dt;
+    if (demo) {
+      demoT += dt;
+      if (demoT > 10) { demoT = 0; demoIdx = demoIdx % (PRESETS.length - 1) + 1; target = PRESETS[demoIdx].p.map(r => r.slice()); markPreset(demoIdx); }
+    }
+    for (let c = 0; c < 3; c++) for (let i = 0; i < 5; i++) {
+      const d = target[c][i] - cur[c][i];
+      cur[c][i] += clamp(d, -dt * 0.6, dt * 0.6);
+    }
+    reads = cur.map(cupReading);
+    sync += (syncTarget(reads) - sync) * (1 - Math.exp(-dt / 2.5));
+
+    for (let c = 0; c < 3; c++) {
+      const r = reads[c];
+      if (r.held) {
+        spawnT[c] -= dt;
+        if (spawnT[c] <= 0) { pulses[c].push({ s: 0, rgb: r.rgb.slice(), lv: r.level }); spawnT[c] = 1.6 - 1.0 * r.level; }
+      }
+      for (const p of pulses[c]) p.s += dt / TRAVEL;
+      while (pulses[c].length && pulses[c][0].s >= 1) {
+        const p = pulses[c].shift();
+        energy[c] = Math.min(1, energy[c] + 0.3 * p.lv);
+        // touch: every other holder feels this arrival
+        for (let o = 0; o < 3; o++) if (o !== c && reads[o].held) { ripple[o] = 1; rippleCol[o] = p.rgb; }
+      }
+      energy[c] = Math.max(0, energy[c] - dt * 0.12);
+      ripple[c] = Math.max(0, ripple[c] - dt / 0.9);
+    }
+
+    // same finger, same moment
+    const allSame = reads.every(r => r.held) && reads.every(r => r.dom === reads[0].dom);
+    if (allSame) floodEl = reads[0].dom;
+    flood += ((allSame ? 1 : 0) - flood) * (1 - Math.exp(-dt / 1.2));
+
+    // Centre: three strands orbit; radius shrinks and spin quickens as agreement rises.
+    const k = smooth(0.05, 0.92, sync);
+    const strandR = 11 * (1 - k);
+    const omega = 0.3 + 1.1 * k;
+    fuse = smooth(0.78, 0.95, sync);
+    const fused = [0, 0, 0]; let fw = 0;
+    for (let c = 0; c < 3; c++) if (energy[c] > 0.02) { for (let j = 0; j < 3; j++) fused[j] += reads[c].rgb[j] * energy[c]; fw += energy[c]; }
+    if (fw) for (let j = 0; j < 3; j++) fused[j] /= fw;
+    const strands = [0, 1, 2].map(c => {
+      const base = reads[c].held ? reads[c].rgb : (pulses[c].length ? pulses[c][pulses[c].length - 1].rgb : fused);
+      return { e: energy[c], phase: CUP_ANG[c] + Math.PI + t * omega, rgb: base.map((v, j) => v + (fused[j] - v) * fuse) };
+    });
+    for (const g of ringGlow) g.fill(0);
+    for (const rod of rods) { rod.rgb = strandLight(rod, strands, strandR); const g = ringGlow[rod.ri]; for (let j = 0; j < 3; j++) g[j] = Math.max(g[j], rod.rgb[j]); }
+    core.rgb = strandLight(core, strands, strandR).map(v => Math.min(255, v * (0.6 + 0.8 * fuse)));
+    ringGlow[3] = core.rgb.slice();
+  }
+
+  // ---------- drawing ----------
+  const topC = document.getElementById('top'), tctx = topC.getContext('2d');
+  const elC = document.getElementById('elev'), ectx = elC.getContext('2d');
+  function fit(cv, ratio) {
+    const w = cv.clientWidth || 600, dpr = Math.min(2, devicePixelRatio || 1);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(w * ratio * dpr);
+  }
+  const rgbStr = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+  const lum = c => (c[0] + c[1] + c[2]) / 765;
+  function glow(ctx, x, y, rad, c, a) {
+    if (a <= 0.004) return;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+    g.addColorStop(0, rgbStr(c, a)); g.addColorStop(1, rgbStr(c, 0));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
+  }
+  const breathNow = () => 0.78 + 0.22 * Math.sin(t * 2 * Math.PI / BREATH);
+
+  function drawTop() {
+    const W = topC.width, H = topC.height, ctx = tctx;
+    const s = W / 108, cx = W / 2, cy = H / 2;
+    const P = ([x, y]) => [cx + x * s, cy + y * s];
+    const breath = breathNow();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#0c1013'; ctx.fillRect(0, 0, W, H);
+
+    // table, light box
+    ctx.fillStyle = '#12181c'; ctx.strokeStyle = '#2a343a'; ctx.lineWidth = Math.max(1, s * 0.12);
+    ctx.beginPath(); ctx.arc(cx, cy, TABLE_R * s, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#0a0d0f';
+    ctx.beginPath(); ctx.arc(cx, cy, BOX_R * s, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.setLineDash([s * 0.5, s * 0.6]);
+    RINGS.forEach(r => { ctx.beginPath(); ctx.arc(cx, cy, r.r * s, 0, Math.PI * 2); ctx.stroke(); });
+    ctx.setLineDash([]);
+
+    // vessels (rod segments) and tributaries
+    for (let c = 0; c < 3; c++) {
+      const r = reads[c];
+      ctx.strokeStyle = r.held ? rgbStr(r.rgb, 0.22) : '#1f282d';
+      ctx.lineWidth = s * 0.6; ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (let i = 0; i <= 40; i++) { const [x, y] = P(vesselPoint(c, i / 40)); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke();
+      const merge = P(vesselPoint(c, 0));
+      const [ccx, ccy] = P(polar(CUP_ANG[c], CUP_DIST));
+      for (let i = 0; i < 5; i++) {
+        const [px, py] = P(padPos(c, i));
+        ctx.strokeStyle = cur[c][i] > 0.05 ? rgbStr(EL[i].rgb, 0.15 + 0.6 * cur[c][i]) : '#1f282d';
+        ctx.lineWidth = s * 0.3;
+        ctx.beginPath(); ctx.moveTo(px, py);
+        ctx.quadraticCurveTo((px + ccx) / 2 + (merge[0] - ccx) * 0.5, (py + ccy) / 2 + (merge[1] - ccy) * 0.5, merge[0], merge[1]);
+        ctx.stroke();
+      }
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    if (flood > 0.02) glow(ctx, cx, cy, TABLE_R * s, EL[floodEl].rgb, 0.22 * flood);
+    for (let c = 0; c < 3; c++) {
+      NODE_S.forEach(ns => {
+        let v = 0, col = reads[c].rgb;
+        for (const p of pulses[c]) { const e = Math.exp(-(((p.s - ns) / 0.07) ** 2)); if (e > v) { v = e; col = p.rgb; } }
+        const [x, y] = P(vesselPoint(c, ns));
+        glow(ctx, x, y, s * 3.2, col, 0.9 * v);
+      });
+      for (let i = 0; i < 5; i++) {
+        const [x, y] = P(padPos(c, i));
+        glow(ctx, x, y, s * (1.4 + 1.6 * cur[c][i]), EL[i].rgb, Math.min(1, cur[c][i] * 1.2));
+      }
+      const [x, y] = P(polar(CUP_ANG[c], CUP_DIST));
+      if (reads[c].held) glow(ctx, x, y, s * 5.5, reads[c].rgb, 0.75 * breath * reads[c].level);
+    }
+    for (const rod of [...rods, core]) {
+      const [x, y] = P([rod.x, rod.y]);
+      const v = lum(rod.rgb);
+      if (v > 0.01) glow(ctx, x, y, s * (rod === core ? 6 + 6 * v : 2.2 + 2.5 * v), rod.rgb.map(q => Math.min(255, q * 1.4)), Math.min(1, 0.4 + v));
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    for (const rod of [...rods, core]) {
+      const [x, y] = P([rod.x, rod.y]);
+      ctx.fillStyle = lum(rod.rgb) > 0.03 ? rgbStr(rod.rgb.map(q => Math.min(255, 40 + q)), 1) : '#3a464d';
+      ctx.beginPath(); ctx.arc(x, y, Math.max(1.5, rod.d * s * 0.9), 0, Math.PI * 2); ctx.fill();
+    }
+    for (let c = 0; c < 3; c++) {
+      const [x, y] = P(polar(CUP_ANG[c], CUP_DIST));
+      ctx.strokeStyle = '#4a575d'; ctx.lineWidth = Math.max(1, s * 0.12);
+      ctx.beginPath(); ctx.arc(x, y, CUP_R * s, 0, Math.PI * 2); ctx.stroke();
+      // touch: the buzz this person feels
+      if (ripple[c] > 0.01) {
+        ctx.strokeStyle = rgbStr(rippleCol[c], ripple[c] * 0.9); ctx.lineWidth = s * 0.35;
+        ctx.beginPath(); ctx.arc(x, y, (CUP_R + 1.2 + (1 - ripple[c]) * 3.5) * s, 0, Math.PI * 2); ctx.stroke();
+      }
+      for (let i = 0; i < 5; i++) {
+        const [px, py] = P(padPos(c, i));
+        // sight: ghost touch from the others pressing the same finger
+        let ghost = 0;
+        for (let o = 0; o < 3; o++) if (o !== c && reads[o].held) ghost = Math.max(ghost, cur[o][i]);
+        ctx.strokeStyle = ghost > 0.15 ? rgbStr(EL[i].rgb, 0.25 + 0.6 * ghost) : '#4a575d';
+        ctx.lineWidth = ghost > 0.15 ? s * 0.28 : Math.max(1, s * 0.12);
+        ctx.beginPath(); ctx.arc(px, py, s * 0.9, 0, Math.PI * 2); ctx.stroke();
+      }
+      const [lx, ly] = P(polar(CUP_ANG[c], CUP_DIST + 8));
+      ctx.fillStyle = '#8c9a98'; ctx.font = `${Math.round(s * 2.6)}px "Gowun Batang", serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(NAMES[c], lx, ly);
+    }
+    ctx.fillStyle = '#8c9a98'; ctx.font = `${Math.round(s * 1.7)}px "IBM Plex Mono", monospace`; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText('rods Ø22 / 14 / 7 cm · cups Ø7 cm', s * 2, H - s * 2);
+  }
+
+  function drawElev() {
+    const W = elC.width, H = elC.height, ctx = ectx;
+    const s = W / 112, x0 = W / 2, y0 = H - s * 8;
+    const X = x => x0 + x * s, Y = y => y0 - y * s;
+    const breath = breathNow();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#0c1013'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = '#2a343a'; ctx.lineWidth = Math.max(1, s * 0.15);
+    ctx.fillStyle = '#12181c'; ctx.fillRect(X(-50), Y(0), 100 * s, 3 * s); ctx.strokeRect(X(-50), Y(0), 100 * s, 3 * s);
+    ctx.fillStyle = '#0a0d0f'; ctx.fillRect(X(-13), Y(0), 26 * s, 6 * s); ctx.strokeRect(X(-13), Y(0), 26 * s, 6 * s);
+    ctx.setLineDash([s * 0.8, s * 0.8]); ctx.strokeStyle = '#3a464d';
+    ctx.beginPath(); ctx.moveTo(X(-52), Y(44)); ctx.lineTo(X(52), Y(44)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#8c9a98'; ctx.font = `${Math.round(s * 1.6)}px "IBM Plex Mono", monospace`; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText('seated eye line ≈ 44 cm above top', X(-50), Y(44) - s * 0.8);
+
+    const rodsSec = [];
+    RINGS.forEach((r, ri) => { rodsSec.push({ x: -r.r, ri, h: r.h, d: r.d }, { x: r.r, ri, h: r.h, d: r.d }); });
+    rodsSec.push({ x: 0, ri: 3, h: CORE.h, d: CORE.d });
+    ctx.globalCompositeOperation = 'lighter';
+    for (const rd of rodsSec) {
+      const c = ringGlow[rd.ri], v = lum(c);
+      if (v > 0.01) {
+        const g = ctx.createLinearGradient(0, Y(0), 0, Y(rd.h));
+        g.addColorStop(0, rgbStr(c, 0.15)); g.addColorStop(1, rgbStr(c, Math.min(1, 0.3 + v)));
+        ctx.fillStyle = g; ctx.fillRect(X(rd.x) - s * 1.6, Y(rd.h), s * 3.2, rd.h * s);
+        glow(ctx, X(rd.x), Y(rd.h), s * (2.5 + 3 * v), c, Math.min(1, 0.4 + v));
+      }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    for (const rd of rodsSec) {
+      const c = ringGlow[rd.ri];
+      ctx.fillStyle = lum(c) > 0.03 ? rgbStr(c.map(q => Math.min(255, 50 + q)), 0.9) : '#2f3a40';
+      ctx.fillRect(X(rd.x) - rd.d * s / 2, Y(rd.h), Math.max(1.5, rd.d * s), rd.h * s);
+    }
+    [[-40, 0], [40, 1]].forEach(([cxm, ci]) => {
+      const r = reads[ci], w = 7, h = 7.5, band = 3.5;
+      ctx.globalCompositeOperation = 'lighter';
+      if (r.held) glow(ctx, X(cxm), Y(h - 1.5), s * 7, r.rgb, 0.6 * breath * r.level);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = '#6b787d'; ctx.lineWidth = Math.max(1, s * 0.15); ctx.fillStyle = r.held ? rgbStr(r.rgb, 0.18 + 0.25 * breath) : '#141b1f';
+      ctx.beginPath();
+      ctx.moveTo(X(cxm - w / 2), Y(0)); ctx.lineTo(X(cxm - w / 2), Y(band));
+      ctx.arc(X(cxm), Y(band), (w / 2) * s, Math.PI, 0); ctx.lineTo(X(cxm + w / 2), Y(0)); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(X(cxm - w / 2), Y(band)); ctx.lineTo(X(cxm + w / 2), Y(band)); ctx.stroke();
+      const pv = pulses[ci];
+      NODE_S.forEach(ns => {
+        const xm = (cxm < 0 ? -1 : 1) * (MERGE_D + (ENTRY_D - MERGE_D) * ns);
+        let v = 0, col = r.rgb;
+        for (const p of pv) { const e = Math.exp(-(((p.s - ns) / 0.07) ** 2)); if (e > v) { v = e; col = p.rgb; } }
+        ctx.fillStyle = '#2f3a40'; ctx.beginPath(); ctx.arc(X(xm), Y(0.6), s * 0.7, 0, Math.PI * 2); ctx.fill();
+        ctx.globalCompositeOperation = 'lighter'; glow(ctx, X(xm), Y(0.6), s * 3, col, 0.9 * v); ctx.globalCompositeOperation = 'source-over';
+      });
+      ctx.fillStyle = '#8c9a98'; ctx.textAlign = 'center';
+      ctx.font = `${Math.round(s * 2.2)}px "Gowun Batang", serif`; ctx.fillText(NAMES[ci], X(cxm), Y(12));
+      ctx.font = `${Math.round(s * 1.5)}px "IBM Plex Mono", monospace`; ctx.fillText('Ø7 × 7.5 cm', X(cxm), Y(-5));
+    });
+    ctx.fillStyle = '#8c9a98'; ctx.font = `${Math.round(s * 1.5)}px "IBM Plex Mono", monospace`; ctx.textAlign = 'left';
+    RINGS.forEach(r => ctx.fillText(`${r.h}`, X(r.r) + s * 1.2, Y(r.h) + s * 0.5));
+    ctx.fillText(`${CORE.h} cm`, X(0) + s * 1.6, Y(CORE.h) + s * 0.5);
+    ctx.textAlign = 'center';
+    ctx.fillText('light box Ø26 cm, recessed 6 cm', X(0), Y(-5));
+    ctx.fillText('vessel ≈ 23 cm', X(-24), Y(-2.5));
+    ctx.fillText('vessel ≈ 23 cm', X(24), Y(-2.5));
+    ctx.strokeStyle = '#8c9a98'; ctx.lineWidth = Math.max(1, s * 0.15);
+    ctx.beginPath(); ctx.moveTo(X(36), Y(40)); ctx.lineTo(X(46), Y(40)); ctx.stroke();
+    ctx.fillText('10 cm', X(41), Y(41.2));
+  }
+
+  // ---------- sound ----------
+  let ac = null, master = null, voices = [], drone = null, soundOn = false;
+  function startAudio() {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    master = ac.createGain(); master.gain.value = 0.45; master.connect(ac.destination);
+    for (let c = 0; c < 3; c++) for (let i = 0; i < 5; i++) {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine'; o.frequency.value = EL[i].hz; g.gain.value = 0;
+      o.connect(g).connect(master); o.start();
+      voices.push({ c, i, o, g });
+    }
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'triangle'; o.frequency.value = EL[2].hz / 2; g.gain.value = 0;
+    o.connect(g).connect(master); o.start(); drone = { o, g };
+  }
+  function updateAudio() {
+    const now = ac.currentTime;
+    for (const v of voices) {
+      // the three cups detune against each other; agreement closes the gap and the beating slows
+      v.o.detune.setTargetAtTime((v.c - 1) * 16 * (1 - sync), now, 0.4);
+      const on = reads[v.c].held ? cur[v.c][v.i] ** 2 * 0.06 : 0;
+      v.g.gain.setTargetAtTime(on, now, 0.12);
+    }
+    const doms = reads.filter(r => r.held).map(r => r.dom);
+    if (doms.length) {
+      const counts = [0, 0, 0, 0, 0]; doms.forEach(d => counts[d]++);
+      drone.o.frequency.setTargetAtTime(EL[counts.indexOf(Math.max(...counts))].hz / 2, now, 0.5);
+    }
+    drone.g.gain.setTargetAtTime(0.09 * fuse * breathNow(), now, 0.4);
+  }
+  const soundBtn = document.getElementById('sound');
+  soundBtn.addEventListener('click', () => {
+    if (!ac) startAudio();
+    soundOn = !soundOn;
+    soundOn ? ac.resume() : ac.suspend();
+    soundBtn.textContent = soundOn ? 'Turn sound off' : 'Turn sound on';
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+  });
+
+  // ---------- UI ----------
+  const cupsEl = document.getElementById('cups');
+  const sliders = [[], [], []], swatches = [];
+  for (let c = 0; c < 3; c++) {
+    const box = document.createElement('div'); box.className = 'cup';
+    box.innerHTML = `<div class="cup-head"><strong>Cup ${NAMES[c]}</strong><span class="swatch" id="sw-${c}"></span></div>`;
+    for (let i = 0; i < 5; i++) {
+      const row = document.createElement('label'); row.className = 'finger';
+      row.title = `${EL[i].finger} · ${EL[i].k} · ${EL[i].organ}`;
+      row.innerHTML = `<i style="color:rgb(${EL[i].rgb})">${EL[i].k}</i><input type="range" id="p-${c}-${i}" min="0" max="1" step="0.01" aria-label="Cup ${NAMES[c]} ${EL[i].finger} (${EL[i].k})">`;
+      const inp = row.querySelector('input'); inp.value = cur[c][i];
+      inp.addEventListener('input', () => { stopDemo(); target[c][i] = +inp.value; cur[c][i] = +inp.value; });
+      sliders[c].push(inp); box.appendChild(row);
+    }
+    cupsEl.appendChild(box); swatches.push(box.querySelector('.swatch'));
+  }
+  const fingerKey = document.createElement('p'); fingerKey.className = 'hint';
+  fingerKey.textContent = 'Wood = thumb · Fire = index · Earth = middle · Metal = ring · Water = little finger';
+  document.getElementById('cups-group').appendChild(fingerKey);
+
+  const presetsEl = document.getElementById('presets');
+  const demoBtn = document.createElement('button'); demoBtn.id = 'demo';
+  presetsEl.appendChild(demoBtn);
+  const pBtns = PRESETS.map((pr, idx) => {
+    const b = document.createElement('button'); b.textContent = pr.name; b.id = `preset-${idx}`;
+    b.addEventListener('click', () => { stopDemo(); target = pr.p.map(r => r.slice()); markPreset(idx); });
+    presetsEl.appendChild(b); return b;
+  });
+  function markPreset(idx) { pBtns.forEach((b, j) => b.setAttribute('aria-pressed', String(j === idx))); }
+  function setDemoLabel() { demoBtn.textContent = demo ? 'Pause demo' : 'Play demo'; demoBtn.setAttribute('aria-pressed', String(demo)); }
+  function stopDemo() { demo = false; setDemoLabel(); }
+  demoBtn.addEventListener('click', () => { demo = !demo; demoT = 0; setDemoLabel(); });
+  setDemoLabel(); markPreset(START);
+
+  const rSync = document.getElementById('r-sync'), rHeld = document.getElementById('r-held'), rState = document.getElementById('r-state');
+  function updateUI() {
+    for (let c = 0; c < 3; c++) {
+      if (demo) for (let i = 0; i < 5; i++) sliders[c][i].value = cur[c][i].toFixed(2);
+      swatches[c].style.background = reads[c].held ? rgbStr(reads[c].rgb) : 'transparent';
+    }
+    rSync.textContent = sync.toFixed(2);
+    const held = reads.filter(r => r.held).length;
+    rHeld.textContent = `${held} / 3`;
+    rState.textContent = flood > 0.5 ? `All ${EL[floodEl].k}` : held === 1 ? 'Waiting' : sync > 0.85 ? 'Bloom' : sync > 0.55 ? 'Braiding' : sync > 0.2 ? 'Orbiting' : 'Apart';
+  }
+
+  for (let i = 0; i < 160; i++) step(0.05);
+
+  function resize() { fit(topC, 1); fit(elC, 0.42); }
+  addEventListener('resize', resize); resize();
+  let last = performance.now(), uiT = 0;
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    step(dt); drawTop(); drawElev();
+    if (soundOn) updateAudio();
+    uiT += dt; if (uiT > 0.12) { uiT = 0; updateUI(); }
+    requestAnimationFrame(frame);
+  }
+  updateUI(); drawTop(); drawElev();
+  requestAnimationFrame(frame);
+
+  // ---------- shared SVG helpers ----------
+  const MONO = 'IBM Plex Mono, monospace', SANS = 'IBM Plex Sans, sans-serif', SERIF = 'Gowun Batang, Georgia, serif';
+  const txt = (x, y, s, o = {}) => `<text x="${x}" y="${y}" font-family="${o.f || SANS}" font-size="${o.sz || 12}" fill="${o.c || '#dfe5e3'}" text-anchor="${o.a || 'start'}"${o.w ? ` font-weight="${o.w}"` : ''}>${s}</text>`;
+  const ln = (x1, y1, x2, y2, c = '#5d6a6f', w = 1, dash = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+  const rgb = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+
+  // ---------- exploded view of the light box ----------
+  (function exploded() {
+    const W = 940, H = 860, cx = 290, s = 9;
+    const LID = 320, BAF = 420, PLATE = 510, SHELL = 590, TRAY = 750;
+    const iso = (x, y, Y) => [cx + x * s, Y + y * s * 0.5];
+    function disc(Y, R, th, fill, stroke, sideFill) {
+      const rx = R * s, ry = R * s * 0.5;
+      let o = `<path d="M${cx - rx},${Y} L${cx - rx},${Y + th} A${rx},${ry} 0 0 0 ${cx + rx},${Y + th} L${cx + rx},${Y} A${rx},${ry} 0 0 1 ${cx - rx},${Y} Z" fill="${sideFill || fill}" stroke="${stroke}" stroke-width="1"/>`;
+      o += `<ellipse cx="${cx}" cy="${Y}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
+      return o;
+    }
+    // a still moment: three strands on the middle ring
+    const strands = [0, 1, 2].map(c => ({ e: 1, phase: 0.6 + c * 2 * Math.PI / 3, rgb: [EL[0].rgb, EL[1].rgb, EL[4].rgb][c] }));
+    const all = [...rods.map(r => ({ ...r })), { ...core }];
+    all.forEach(r => { r.h = r.ri === 3 ? CORE.h : RINGS[r.ri].h; r.lit = strandLight(r, strands, 7); });
+    all[all.length - 1].lit = [150, 130, 100];
+
+    let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Exploded axonometric view of the light box: rods, lid, baffle, pixel plate, drum and service tray">`;
+    o += `<defs><filter id="bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter></defs>`;
+    // assembly axes
+    o += ln(cx, LID + 20, cx, TRAY, '#2a343a', 1, '4 5');
+    o += ln(cx - 13 * s, LID, cx - 13 * s, TRAY, '#2a343a', 1, '4 5');
+    o += ln(cx + 13 * s, LID, cx + 13 * s, TRAY, '#2a343a', 1, '4 5');
+
+    // service tray
+    o += disc(TRAY, 12, 6, '#161c20', '#3a464d', '#11161a');
+    const box = (x, y, w, d, label, c = '#2a343a') => {
+      const [ax, ay] = iso(x, y, TRAY);
+      return `<rect x="${ax}" y="${ay - 10}" width="${w * s}" height="${d * s * 0.5 + 10}" rx="2" fill="${c}" stroke="#5d6a6f"/>` + txt(ax + w * s / 2, ay + d * s * 0.25 + 1, label, { f: MONO, sz: 9, c: '#dfe5e3', a: 'middle' });
+    };
+    o += box(-9, -4, 6, 4, 'ESP32');
+    o += box(-1, -7, 8, 5, '5V 4A PSU');
+    o += box(-7, 3, 5, 3, 'LVL SHIFT');
+    o += box(1, 2, 4.5, 3, 'I2S AMP');
+    const [spx, spy] = iso(8.5, 3, TRAY);
+    o += `<ellipse cx="${spx}" cy="${spy}" rx="${2.6 * s}" ry="${1.3 * s}" fill="#0c1013" stroke="#5d6a6f"/><ellipse cx="${spx}" cy="${spy}" rx="${1.1 * s}" ry="${0.55 * s}" fill="#2a343a"/>`;
+
+    // drum shell with ports
+    o += disc(SHELL, 13, 54, '#141a1e', '#3a464d', '#11171b');
+    o += `<ellipse cx="${cx}" cy="${SHELL}" rx="${12.4 * s}" ry="${6.2 * s}" fill="#0a0d0f" stroke="#2a343a"/>`;
+    [Math.PI / 6, Math.PI * 5 / 6].forEach(a => {
+      const px = cx + Math.cos(a) * 13 * s, py = SHELL + Math.sin(a) * 6.5 * s + 22;
+      o += `<rect x="${px - 8}" y="${py - 6}" width="16" height="12" rx="3" fill="#0a0d0f" stroke="#e0b23c"/>`;
+    });
+    const gx = cx + Math.cos(Math.PI / 2) * 13 * s, gy = SHELL + 6.5 * s + 18;
+    for (let k = -3; k <= 3; k++) o += `<circle cx="${gx + k * 8}" cy="${gy + 10}" r="2" fill="#0a0d0f" stroke="#5d6a6f" stroke-width=".8"/>`;
+
+    // pixel plate
+    o += disc(PLATE, 12.6, 4, '#1d2327', '#3a464d', '#161b1f');
+    for (let ri = 0; ri < 3; ri++) {
+      const ring = all.filter(r => r.ri === ri);
+      let path = '';
+      ring.forEach((r, k) => { const [x, y] = iso(r.x, r.y, PLATE); path += `${k ? 'L' : 'M'}${x},${y} `; });
+      o += `<path d="${path}Z" fill="none" stroke="#7a6a45" stroke-width=".8"/>`;
+    }
+    for (const r of all) {
+      const [x, y] = iso(r.x, r.y, PLATE);
+      if (r.ri === 3) { for (let k = 0; k < 7; k++) { const a = k * Math.PI / 3, rr = k === 6 ? 0 : 0.9 * s; o += `<rect x="${x + Math.cos(a) * rr - 3}" y="${y + Math.sin(a) * rr * 0.5 - 2}" width="6" height="4" fill="#efe6c6" stroke="#8a7a50" stroke-width=".5"/>`; } }
+      else o += `<rect x="${x - 3.5}" y="${y - 2.2}" width="7" height="4.4" fill="#efe6c6" stroke="#8a7a50" stroke-width=".5"/>`;
+    }
+
+    // baffle
+    o += disc(BAF, 12.6, 14, '#0e1113', '#3a464d', '#0b0e10');
+    for (const r of all) { const [x, y] = iso(r.x, r.y, BAF); const rr = (r.d / 2 + 0.25) * s; o += `<ellipse cx="${x}" cy="${y}" rx="${rr + 1}" ry="${(rr + 1) * 0.5}" fill="#000" stroke="#4a575d" stroke-width=".7"/>`; }
+
+    // lid + rods
+    o += disc(LID, 13, 5, 'rgba(210,220,225,.10)', '#6b787d', 'rgba(210,220,225,.07)');
+    for (const r of all) { const [x, y] = iso(r.x, r.y, LID); const rr = (r.d / 2 + 0.1) * s; o += `<ellipse cx="${x}" cy="${y}" rx="${rr + 1}" ry="${(rr + 1) * 0.5}" fill="#05080a" stroke="#6b787d" stroke-width=".6"/>`; }
+    const order = all.slice().sort((a, b) => a.y - b.y);
+    for (const r of order) {
+      const [x, y] = iso(r.x, r.y, LID);
+      const top = y - r.h * s, w = Math.max(2.2, r.d * s);
+      const v = lum(r.lit), col = r.lit.map(q => Math.min(255, 70 + q));
+      if (v > 0.04) o += `<line x1="${x}" y1="${y}" x2="${x}" y2="${top}" stroke="${rgb(r.lit, Math.min(.7, .2 + v))}" stroke-width="${w + 8}" filter="url(#bl)"/>`;
+      o += `<line x1="${x}" y1="${y}" x2="${x}" y2="${top}" stroke="${v > 0.04 ? rgb(col, .55) : 'rgba(200,215,220,.28)'}" stroke-width="${w}"/>`;
+      o += `<ellipse cx="${x}" cy="${top}" rx="${w / 2 + (v > .04 ? 2.5 : .5)}" ry="${(w / 2 + (v > .04 ? 2.5 : .5)) * .5}" fill="${v > 0.04 ? rgb(col, 1) : 'rgba(200,215,220,.5)'}"/>`;
+    }
+
+    // height scale
+    const hx = 46;
+    o += ln(hx, LID, hx, LID - 30 * s, '#5d6a6f');
+    [0, 8, 15, 22, 30].forEach(h => { o += ln(hx - 4, LID - h * s, hx + 4, LID - h * s, '#5d6a6f'); o += txt(hx - 8, LID - h * s + 4, `${h}`, { f: MONO, sz: 10, c: '#8c9a98', a: 'end' }); });
+    o += txt(hx, LID + 18, 'cm above lid', { f: MONO, sz: 10, c: '#8c9a98', a: 'middle' });
+
+    // labels
+    const LX = 560;
+    const label = (Y, title, l1, l2, fromX) => {
+      let r = ln(fromX, Y, LX - 10, Y, '#5d6a6f') + `<circle cx="${fromX}" cy="${Y}" r="2.5" fill="#8c9a98"/>`;
+      r += txt(LX, Y - 4, title, { f: SERIF, sz: 16, w: 700 });
+      r += txt(LX, Y + 14, l1, { sz: 12, c: '#8c9a98' });
+      if (l2) r += txt(LX, Y + 30, l2, { sz: 12, c: '#8c9a98' });
+      return r;
+    };
+    o += label(LID - 205, 'Rods', '31 clear acrylic rods + one core rod', 'Ø4 / 5 / 6 mm at 8 / 15 / 22 cm · core Ø12 × 30 cm', cx + 3.5 * s);
+    o += label(LID, 'Lid', '5 mm frosted acrylic, Ø26 cm, laser-cut sockets', 'Sits flush in a rebate in the tabletop', cx + 13 * s);
+    o += label(BAF + 6, 'Light baffle', 'Black PETG print, 15 mm deep, one tube per rod', 'Stops colour bleeding from rod to rod', cx + 12.6 * s);
+    o += label(PLATE, 'Pixel plate', '31 single WS2812B pixels + 7-pixel jewel for the core', 'One data line, daisy-chained ring by ring (outer → core)', cx + 12.6 * s);
+    o += label(SHELL + 27, 'Drum', 'Ø26 × 6 cm, printed in segments or bent ply', 'Vessel ports at 120° (gold) · speaker grille at front', cx + 13 * s);
+    o += label(TRAY, 'Service tray', 'ESP32, 5 V 4 A supply, level shifter, I2S amp, speaker', 'Drops out from under the table for repairs', cx + 12 * s);
+    o += txt(20, H - 16, 'Axonometric, not to scale vertically between layers. Plan dimensions to scale.', { f: MONO, sz: 10, c: '#8c9a98' });
+    o += '</svg>';
+    document.getElementById('exploded').innerHTML = o;
+  })();
+
+  // ---------- socket + mounting details ----------
+  (function details() {
+    const W = 980, H = 520;
+    let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rod socket detail and half-section of the table mounting">`;
+    o += `<defs><linearGradient id="rodg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="rgba(229,84,75,.55)"/><stop offset=".7" stop-color="rgba(229,84,75,.18)"/><stop offset="1" stop-color="rgba(229,84,75,.25)"/></linearGradient>`;
+    o += `<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#3a464d" stroke-width="1"/></pattern></defs>`;
+
+    // --- A: socket, 6 px per mm ---
+    const k = 6, cx = 170, L0 = 40, R0 = 300;
+    const yLid = 170, yBaf = yLid + 5 * k, yGap = yBaf + 15 * k, yPix = yGap + 0.5 * k, yPlate = yPix + 1.6 * k, yEnd = yPlate + 3 * k;
+    const rw = 5 * k, rx0 = cx - rw / 2, rx1 = cx + rw / 2, hole = 0.15 * k;
+    o += txt(L0, 26, 'A · Rod socket, Ø5 mm rod (middle ring)', { f: SERIF, sz: 16, w: 700 });
+    o += txt(L0, 44, 'Scale 6:1', { f: MONO, sz: 10, c: '#8c9a98' });
+    // lid
+    o += `<rect x="${L0}" y="${yLid}" width="${rx0 - hole - L0}" height="${5 * k}" fill="rgba(210,220,225,.14)" stroke="#6b787d"/>`;
+    o += `<rect x="${rx1 + hole}" y="${yLid}" width="${R0 - rx1 - hole}" height="${5 * k}" fill="rgba(210,220,225,.14)" stroke="#6b787d"/>`;
+    // baffle
+    o += `<rect x="${L0}" y="${yBaf}" width="${rx0 - hole - L0}" height="${15 * k}" fill="url(#hatch)" stroke="#5d6a6f"/>`;
+    o += `<rect x="${rx1 + hole}" y="${yBaf}" width="${R0 - rx1 - hole}" height="${15 * k}" fill="url(#hatch)" stroke="#5d6a6f"/>`;
+    // plate + pixel
+    o += `<rect x="${L0}" y="${yPlate}" width="${R0 - L0}" height="${3 * k}" fill="#1d2327" stroke="#5d6a6f"/>`;
+    o += `<rect x="${rx0}" y="${yPix}" width="${rw}" height="${1.6 * k}" fill="#efe6c6" stroke="#8a7a50"/>`;
+    o += `<ellipse cx="${cx}" cy="${yPix}" rx="${rw * .7}" ry="${rw * .45}" fill="rgba(229,84,75,.35)" style="filter:blur(4px)"/>`;
+    // rod with break
+    const yTop = 72;
+    o += `<rect x="${rx0}" y="${yTop}" width="${rw}" height="${yGap - yTop}" fill="url(#rodg)" stroke="rgba(230,235,238,.7)"/>`;
+    o += `<path d="M${rx0 - 8},${yTop + 18} l10,-6 l8,10 l8,-10 l8,10 l10,-6" fill="none" stroke="#8c9a98"/>`;
+    o += `<rect x="${rx0}" y="${yTop}" width="${rw}" height="10" fill="rgba(240,180,170,.9)"/>`;
+    o += txt(cx, yTop - 8, '↑ continues to 15 cm', { f: MONO, sz: 10, c: '#8c9a98', a: 'middle' });
+    // annotations
+    const AX = 330;
+    const ann = (y, tx, s, ly = y) => `<polyline points="${tx},${y} ${R0 + 8},${y} ${AX - 6},${ly}" fill="none" stroke="#5d6a6f"/>` + `<circle cx="${tx}" cy="${y}" r="2" fill="#8c9a98"/>` + txt(AX, ly + 4, s, { sz: 12 });
+    o += ann(yTop + 5, rx1, 'Sanded tip: the light comes out here');
+    o += ann(130, rx1, 'Polished sides: light stays inside');
+    o += ann(yLid + 2, rx1 + hole, 'Hole = rod Ø + 0.25 mm', 154);
+    o += ann(yLid + 15, R0 - 20, 'Lid: 5 mm frosted acrylic', 184);
+    o += ann(yBaf + 50, R0 - 20, 'Baffle: black PETG, 15 mm', 240);
+    o += ann(yGap, rx1, 'Rod end flat and polished, 0–0.5 mm', 276);
+    o += ann(yPix + 5, rx1, 'WS2812B 5050 pixel', 302);
+    o += ann(yPlate + 9, R0 - 20, 'Pixel plate, 3 mm', 328);
+    o += ln(L0, yEnd + 26, L0 + 10 * k, yEnd + 26, '#8c9a98') + txt(L0 + 5 * k, yEnd + 42, '10 mm', { f: MONO, sz: 10, c: '#8c9a98', a: 'middle' });
+
+    // --- B: table mount half-section, 1.6 px per mm ---
+    const m = 1.6, CL = 600, top = 170;
+    const X = mm => CL + mm * m;
+    o += txt(CL - 10, 26, 'B · Table mount, half-section', { f: SERIF, sz: 16, w: 700 });
+    o += txt(CL - 10, 44, 'Scale 1:2.5 · centre line on the left', { f: MONO, sz: 10, c: '#8c9a98' });
+    o += ln(CL, 60, CL, 420, '#5d6a6f', 1, '8 4 2 4') + txt(CL - 4, 418, 'CL', { f: MONO, sz: 10, c: '#8c9a98', a: 'end' });
+    // tabletop (18 mm) with rebate, cutout r=125, rebate r=131 x 5 mm
+    o += `<path d="M${X(131)},${top} L${X(225)},${top} L${X(225)},${top + 18 * m} L${X(125)},${top + 18 * m} L${X(125)},${top + 5 * m} L${X(131)},${top + 5 * m} Z" fill="url(#hatch)" stroke="#6b787d"/>`;
+    // vessel groove + rod in tabletop
+    o += `<rect x="${X(131)}" y="${top}" width="${X(225) - X(131)}" height="${8 * m}" fill="#0a0d0f" stroke="#5d6a6f"/>`;
+    o += `<rect x="${X(131)}" y="${top + 1.5 * m}" width="${X(225) - X(131)}" height="${5 * m}" fill="rgba(95,174,106,.45)" stroke="rgba(200,230,205,.6)"/>`;
+    o += `<circle cx="${X(134)}" cy="${top + 4 * m}" r="5" fill="rgba(95,174,106,.9)"/>`;
+    // lid
+    o += `<rect x="${CL}" y="${top}" width="${130 * m}" height="${5 * m}" fill="rgba(210,220,225,.16)" stroke="#6b787d"/>`;
+    // drum wall + floor, flange under tabletop
+    const dTop = top + 5 * m, dBot = dTop + 60 * m;
+    o += `<rect x="${X(118)}" y="${dTop}" width="${6 * m}" height="${60 * m}" fill="#1d2327" stroke="#6b787d"/>`;
+    o += `<rect x="${X(118)}" y="${top + 18 * m}" width="${(160 - 118) * m}" height="${5 * m}" fill="#1d2327" stroke="#6b787d"/>`;
+    o += `<rect x="${X(150)}" y="${top + 12 * m}" width="${2 * m}" height="${14 * m}" fill="#8c9a98"/>`;
+    o += `<rect x="${CL}" y="${dBot - 4 * m}" width="${124 * m}" height="${4 * m}" fill="#1d2327" stroke="#6b787d"/>`;
+    // baffle + plate inside drum
+    o += `<rect x="${CL}" y="${dTop}" width="${118 * m}" height="${15 * m}" fill="url(#hatch)" stroke="#5d6a6f"/>`;
+    o += `<rect x="${CL}" y="${dTop + 15.5 * m}" width="${118 * m}" height="${3 * m}" fill="#2a2f33" stroke="#5d6a6f"/>`;
+    // vessel port through drum wall
+    o += `<rect x="${X(116)}" y="${dTop + 26 * m}" width="${10 * m}" height="${7 * m}" fill="#0a0d0f" stroke="#e0b23c"/>`;
+    // service tray
+    const tTop = dBot + 4;
+    o += `<rect x="${X(10)}" y="${tTop}" width="${105 * m}" height="${32 * m}" rx="3" fill="#161c20" stroke="#5d6a6f" stroke-dasharray="5 3"/>`;
+    o += `<rect x="${X(20)}" y="${tTop + 10}" width="${30 * m}" height="${14 * m}" fill="#2a343a" stroke="#5d6a6f"/>`;
+    o += `<rect x="${X(60)}" y="${tTop + 10}" width="${40 * m}" height="${18 * m}" fill="#2a343a" stroke="#5d6a6f"/>`;
+    // rods rising (clipped)
+    [[0, 12, [150, 130, 100]], [35, 6, EL[4].rgb], [70, 5, EL[1].rgb], [110, 4, EL[0].rgb]].forEach(([r, d, c]) => {
+      const x0 = r === 0 ? CL : X(r) - d * m / 2, w = r === 0 ? d * m / 2 : d * m;
+      o += `<rect x="${x0}" y="${70}" width="${w}" height="${dTop + 15 * m - 70}" fill="${rgb(c, .4)}" stroke="rgba(230,235,238,.5)"/>`;
+    });
+    o += `<path d="M${CL - 4},86 l10,-6 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10 l8,10 l8,-10" fill="none" stroke="#8c9a98"/>`;
+    // callouts
+    const call = (n, x, y) => `<circle cx="${x}" cy="${y}" r="9" fill="#0c1013" stroke="#e0b23c"/>` + txt(x, y + 4, n, { f: MONO, sz: 10, c: '#e0b23c', a: 'middle' });
+    o += call(1, X(185), top - 16);
+    o += call(2, X(80), top - 16);
+    o += call(3, X(160) + 14, top + 22 * m);
+    o += call(4, X(132) + 18, dTop + 30 * m);
+    o += call(5, X(60), dTop + 7 * m);
+    o += call(6, X(120) + 22, tTop + 26);
+    const KX = CL - 10, KY = 440;
+    const key = [
+      '1  Vessel rod in a 10 mm groove in the 18 mm ply tabletop',
+      '2  Lid sits in a 5 mm rebate, flush with the top. Lifts out for cleaning',
+      '3  Drum flange screwed under the tabletop',
+      '4  Vessel port: the last node pixel sits just inside the drum wall',
+      '5  Baffle and pixel plate stack inside the drum',
+      '6  Service tray drops out from below: ESP32, supply, amp, speaker',
+    ];
+    key.forEach((s, i) => { o += txt(KX, KY + i * 13, s, { sz: 11, c: '#8c9a98' }); });
+    o += '</svg>';
+    document.getElementById('details').innerHTML = o;
+  })();
+
+  // ---------- unrolled pad band (static SVG, 20 px per cm) ----------
+  const S = 20, Wcm = 22, bandTop = 3, padCy = 5, grooveEnd = 10.5;
+  let svg = `<svg viewBox="0 0 ${(Wcm + 4) * S} ${15 * S}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Unrolled pad band with five finger pads at 4.4 cm pitch">`;
+  svg += `<rect x="${2 * S}" y="${bandTop * S}" width="${Wcm * S}" height="${(grooveEnd - bandTop) * S}" fill="#12181c" stroke="#2a343a"/>`;
+  EL.forEach((e, i) => {
+    const x = (2 + 2.2 + i * 4.4) * S;
+    svg += `<rect x="${x - 0.15 * S}" y="${(padCy + 1.3) * S}" width="${0.3 * S}" height="${(grooveEnd - padCy - 1.3) * S}" fill="rgb(${e.rgb})" opacity=".55"/>`;
+    svg += `<ellipse cx="${x}" cy="${padCy * S}" rx="${1.1 * S}" ry="${1.3 * S}" fill="rgb(${e.rgb})" fill-opacity=".22" stroke="rgb(${e.rgb})" stroke-width="1.5"/>`;
+    svg += txt(x, (padCy + 0.25) * S, e.k, { f: SERIF, sz: 13, w: 700, a: 'middle' });
+    svg += txt(x, (grooveEnd + 1.3) * S, e.finger, { sz: 13, a: 'middle' });
+    svg += txt(x, (grooveEnd + 2.3) * S, `${e.organ}`, { f: MONO, sz: 11, c: '#8c9a98', a: 'middle' });
+  });
+  const dy = 1.6 * S, ax = (2 + 2.2) * S, bx = (2 + 6.6) * S;
+  svg += `<g stroke="#8c9a98" stroke-width="1"><line x1="${ax}" y1="${dy}" x2="${bx}" y2="${dy}"/><line x1="${ax}" y1="${dy - 5}" x2="${ax}" y2="${dy + 5}"/><line x1="${bx}" y1="${dy - 5}" x2="${bx}" y2="${dy + 5}"/></g>`;
+  svg += txt((ax + bx) / 2, dy - 7, '4.4 cm pitch', { f: MONO, sz: 11, c: '#8c9a98', a: 'middle' });
+  const ty = 14 * S;
+  svg += `<g stroke="#8c9a98" stroke-width="1"><line x1="${2 * S}" y1="${ty}" x2="${(2 + Wcm) * S}" y2="${ty}"/><line x1="${2 * S}" y1="${ty - 5}" x2="${2 * S}" y2="${ty + 5}"/><line x1="${(2 + Wcm) * S}" y1="${ty - 5}" x2="${(2 + Wcm) * S}" y2="${ty + 5}"/></g>`;
+  svg += txt((2 + Wcm / 2) * S, ty - 7, 'circumference 22.0 cm (Ø7 cm)', { f: MONO, sz: 11, c: '#8c9a98', a: 'middle' });
+  svg += txt((2 + Wcm) * S + 6, (grooveEnd - 0.3) * S, '↓ table', { f: MONO, sz: 11, c: '#8c9a98' });
+  svg += `</svg>`;
+  document.getElementById('band').innerHTML = svg;
+})();
+</script>
+
+</body>
+</html>

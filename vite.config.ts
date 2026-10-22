@@ -9,6 +9,7 @@ export default defineConfig({
         sim: './sim.html',
         log: './log.html',
         manual: './manual.html',
+        design: './design.html',
       },
     },
   },

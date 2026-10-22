@@ -3,3 +3,7 @@ dist
 .DS_Store
 *.log
 logs/
+
+# publication notes stay local until the paper is out
+docs/FOUNDATIONS.md
+docs/design/

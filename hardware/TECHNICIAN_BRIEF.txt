@@ -1,3 +1,6 @@
+SUPERSEDED 23 Oct 2026: the cup form, sensors and power below are replaced by hardware/SEA_TABLE_BRIEF.md
+(five-pad 7 cm cups, no pulse sensor, docked in a sea table). Kept for the record.
+
 CIRCULATION: CUPPING, COLOUR, AND COLLECTIVE SENSING
 Technician briefing, prepared 11 July 2026
 Bin Youn, RMIT Vietnam. SCD Seed Funding 2026. Funded build: 1 June to 30 November 2026. No exhibition deadline: the goal is a fully built, endurance-tested three-cup system by the end of November.
