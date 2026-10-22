@@ -316,10 +316,12 @@ tr:last-child td { border-bottom: 0; }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- state ----------
-  const START = 2;
+  // ?scene=converging (etc.) opens a fixed scenario with the demo paused, for stills
+  const sceneIdx = PRESETS.findIndex(p => p.name.toLowerCase().replace(/ /g, '-') === new URLSearchParams(location.search).get('scene'));
+  const START = sceneIdx >= 0 ? sceneIdx : 2;
   const cur = PRESETS[START].p.map(r => r.slice());
   let target = PRESETS[START].p.map(r => r.slice());
-  let demo = !reduced, demoIdx = START, demoT = 0;
+  let demo = !reduced && sceneIdx < 0, demoIdx = START, demoT = 0;
   let sync = 0, t = 0, fuse = 0, flood = 0, floodEl = 2;
   const pulses = [[], [], []];
   const spawnT = [0, 0, 0];
@@ -719,7 +721,7 @@ tr:last-child td { border-bottom: 0; }
     rState.textContent = flood > 0.5 ? `All ${EL[floodEl].k}` : held === 1 ? 'Waiting' : sync > 0.85 ? 'Bloom' : sync > 0.55 ? 'Braiding' : sync > 0.2 ? 'Orbiting' : 'Apart';
   }
 
-  for (let i = 0; i < 160; i++) step(0.05);
+  for (let i = 0; i < (sceneIdx >= 0 ? 600 : 160); i++) step(0.05);
 
   function resize() { fit(topC, 1); fit(elC, 0.42); }
   addEventListener('resize', resize); resize();
