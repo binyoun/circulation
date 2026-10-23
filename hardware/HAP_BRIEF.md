@@ -1,4 +1,4 @@
-# Circulation: sea table production brief
+# Circulation: Hap production brief
 
 Prepared 23 October 2026 for the technician. Bin Youn, RMIT Vietnam. SCD Seed Funding 2026.
 Funded build ends **30 November 2026**.
@@ -7,13 +7,15 @@ Funded build ends **30 November 2026**.
 (top view, section, exploded light box, socket and mounting details, cup pad band, parts schedule).
 Open it first; this brief refers to it.
 
+**Name.** The round table with the light box at its centre is called the **Hap** (Korean 합, Vietnamese hợp, Chinese 合): the meeting point where flows join, from the classical five transport points (井 well · 滎 spring · 輸 stream · 經 river · 合 Hap). In this brief, "the Hap" means the whole table.
+
 This brief **replaces the build direction in `TECHNICIAN_BRIEF.txt` (11 July)**. What changed:
 
 | July brief | Now |
 |---|---|
 | Transparent vacuum cupping cups, palm seals the mouth | Custom 3D-printed cup, Ø7 cm, dome on a band with **five finger pads** |
 | Pressure (BMP280 or FSR) + pulse (MAX30102) | **Five FSRs per cup, no pulse sensor** |
-| Cups untethered on battery | Cups **dock in a table** and take power through the seat |
+| Cups untethered on battery | Cups **dock in the Hap** (the table) and take power through the seat |
 | Room layer optional (TouchDesigner) | Physical centre piece: a **light box with 31 acrylic rods** in the table |
 
 Unchanged: no suction on skin, cups must be alcohol-wipeable, 2× spares of everything, keep all raw sensor logs.

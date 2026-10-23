@@ -1,5 +1,5 @@
-SUPERSEDED 23 Oct 2026: the cup form, sensors and power below are replaced by hardware/SEA_TABLE_BRIEF.md
-(five-pad 7 cm cups, no pulse sensor, docked in a sea table). Kept for the record.
+SUPERSEDED 23 Oct 2026: the cup form, sensors and power below are replaced by hardware/HAP_BRIEF.md
+(five-pad 7 cm cups, no pulse sensor, docked in the Hap, the round table). Kept for the record.
 
 CIRCULATION: CUPPING, COLOUR, AND COLLECTIVE SENSING
 Technician briefing, prepared 11 July 2026
