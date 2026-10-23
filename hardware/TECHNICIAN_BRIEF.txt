@@ -7,7 +7,7 @@ Bin Youn, RMIT Vietnam. SCD Seed Funding 2026. Funded build: 1 June to 30 Novemb
 
 THE PROJECT IN ONE PARAGRAPH
 
-Three handheld devices built from real cupping therapy cups (giac hoi / buhang vacuum cups). Each cup reads the body holding it through pressure and pulse, maps that reading to one of the Five Elements (ohaeng), and glows that colour from within. When three participants hold cups and their states sit adjacent on the generating cycle, light travels from cup to cup: circulation between bodies. When a cup is released, its colour lingers and fades like a cupping mark. A working browser simulator of the full interaction is live at https://binyoun.github.io/circulation/ and the firmware draft is in the repo at https://github.com/binyoun/circulation (hardware/cup/cup.ino).
+Three handheld devices built from real cupping therapy cups (giac hoi / buhang vacuum cups). Each cup reads the body holding it through pressure and pulse, maps that reading to one of the Five Elements (ohaeng), and glows that colour from within. When three participants hold cups and their states sit adjacent on the generating cycle, light travels from cup to cup: circulation between bodies. When a cup is released, its colour lingers and fades like a cupping mark. A working browser simulator of the full interaction is live at https://circulatorysensing.com/ and the firmware draft is in the repo at https://github.com/binyoun/circulation (hardware/cup/cup.ino).
 
 THE ONE ARCHITECTURE RULE
 

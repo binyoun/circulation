@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/circulation/', // for GitHub Pages under the repo name
+  base: '/', // served at https://circulatorysensing.com (custom domain on GitHub Pages)
   build: {
     rollupOptions: {
       input: {

@@ -3,7 +3,7 @@
 Prepared 23 October 2026 for the technician. Bin Youn, RMIT Vietnam. SCD Seed Funding 2026.
 Funded build ends **30 November 2026**.
 
-**Drawings and live simulator:** https://binyoun.github.io/circulation/design.html
+**Drawings and live simulator:** https://circulatorysensing.com/design.html
 (top view, section, exploded light box, socket and mounting details, cup pad band, parts schedule).
 Open it first; this brief refers to it.
 
