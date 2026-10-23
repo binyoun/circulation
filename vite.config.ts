@@ -10,6 +10,7 @@ export default defineConfig({
         log: './log.html',
         manual: './manual.html',
         design: './design.html',
+        toolkit: './toolkit.html',
       },
     },
   },

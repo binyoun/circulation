@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circulation Toolkit</title>
+<meta name="description" content="A reusable toolkit for running Circulation workshops: twelve participant kits that sense touch and pulse, a facilitator case, and printable workshop sheets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a kit spec sheet. What the toolkit is, the participant box drawn, each module as a parts
+   list, the circuit, then downloads (worksheets, packing cards, code). No prices on the public page. */
+:root {
+  --ground: #eef0ee; --sheet: #f8f9f7; --ink: #151b1e; --soft: #5a6568; --line: #cdd3d1;
+  --accent: #a87b0c; --accent-wash: rgba(168,123,12,.10);
+  --wood: #2f8a3e; --fire: #c8382e; --earth: #b9850a; --metal: #7c878d; --water: #1f5296;
+  --display: "Gowun Batang", Georgia, serif; --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; --ground: #0d1115; --sheet: #141a1f; --ink: #e8ecea; --soft: #95a2a4; --line: #2a343b;
+    --accent: #e0b23c; --accent-wash: rgba(224,178,60,.12); --wood: #6cc27a; --fire: #f0645a; --earth: #f0c24a; --metal: #c9d0d4; --water: #5b95dc; }
+}
+* { box-sizing: border-box; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 72px; }
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 56px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 6vw, 56px); line-height: 1; margin: 0; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0; text-wrap: balance; }
+h3 { margin: 0; font-family: var(--display); font-size: 19px; }
+p { margin: 0; max-width: 66ch; }
+.lede { font-size: 17px; max-width: 62ch; }
+.stripe { display: flex; height: 6px; width: 180px; border-radius: 3px; overflow: hidden; }
+.stripe i { flex: 1; }
+section { display: grid; gap: 18px; }
+.head { display: grid; gap: 6px; }
+.head p { color: var(--soft); }
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.facts div { padding: 14px 16px 14px 0; display: grid; gap: 2px; }
+.facts b { font-family: var(--display); font-size: 28px; line-height: 1.1; }
+.facts span { font-size: 12.5px; color: var(--soft); }
+@media (max-width: 640px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+.figure { border: 1px solid var(--line); border-radius: 6px; background: var(--sheet); overflow-x: auto; }
+.figure svg { display: block; width: 100%; min-width: 620px; height: auto; }
+.uses { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); border-top: 1px solid var(--line); }
+.uses div { padding: 14px 16px 14px 0; display: grid; gap: 4px; border-bottom: 1px solid var(--line); }
+.uses b { font-family: var(--display); font-size: 17px; }
+.uses p { font-size: 13.5px; color: var(--soft); }
+.mods { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px 36px; }
+.mod { display: grid; gap: 8px; align-content: start; }
+.mod .where { font-family: var(--mono); font-size: 11.5px; color: var(--soft); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 7px 8px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-right: 0; }
+td code, p code { font-family: var(--mono); font-size: 12.5px; }
+.wide table { min-width: 560px; }
+.downloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.dl { display: grid; gap: 6px; align-content: start; padding: 16px; background: var(--sheet); border: 1px solid var(--line); border-radius: 6px; text-decoration: none; }
+.dl:hover { border-color: var(--accent); }
+.dl .kind { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.dl b { font-size: 16px; }
+.dl span { font-size: 13.5px; color: var(--soft); }
+footer { font-size: 12.5px; color: var(--soft); border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><a href="./">Circulation</a> · workshop toolkit · RMIT Vietnam</div>
+    <h1>Circulation Toolkit</h1>
+    <div class="stripe" aria-hidden="true"><i style="background:var(--wood)"></i><i style="background:var(--fire)"></i><i style="background:var(--earth)"></i><i style="background:var(--metal)"></i><i style="background:var(--water)"></i></div>
+    <p class="lede">A portable toolkit for running Circulation workshops anywhere: twelve participant kits that sense touch and pulse and talk to each other over Wi-Fi, a facilitator case for power, network and repair, and printable worksheets. Everything packs into two cases.</p>
+  </header>
+
+  <div class="facts">
+    <div><b>12</b><span>participant kits (9 + 3 spare)</span></div>
+    <div><b>4</b><span>modules</span></div>
+    <div><b>2</b><span>cases carry everything</span></div>
+    <div><b>0</b><span>soldering on the day</span></div>
+  </div>
+
+  <section>
+    <div class="head">
+      <h2>Inside one participant box</h2>
+      <p>A compartment box about 20 × 13 × 5 cm, numbered 01–12. Everything plugs in. The lid label carries the kit number, the five element colours and a QR code to this page.</p>
+    </div>
+    <div class="figure" id="box"></div>
+    <div class="uses">
+      <div><b>Press → light</b><p>FSR + NeoPixel stick. One finger pad of the Circulation cup, in your element's colour.</p></div>
+      <div><b>Pulse → light</b><p>MAX30102 + NeoPixel. Light that beats with your pulse.</p></div>
+      <div><b>Touch → buzz</b><p>Coin motor. Feel someone else's press arrive.</p></div>
+      <div><b>Three kits → one centre</b><p>Wi-Fi on the XIAO ESP32-S3. Kits share readings through the travel router, so a table of participants becomes a small Circulation.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><h2>What's in the toolkit</h2><p>Quantities for one complete toolkit.</p></div>
+    <div class="mods" id="mods"></div>
+  </section>
+
+  <section class="wide">
+    <div class="head">
+      <h2>The kit circuit</h2>
+      <p>One XIAO ESP32-S3 per kit. Pins follow Seeed's D-pin map; the full netlist and a prompt for drawing the schematic in Flux.ai are in <a href="https://github.com/binyoun/circulation/blob/main/hardware/workshop-kit/FLUX_SCHEMATIC.md">FLUX_SCHEMATIC.md</a>.</p>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Part</th><th>Connects to</th><th>Power</th></tr></thead>
+      <tbody>
+        <tr><td>FSR + 10 kΩ pull-down</td><td><code>D0</code> (GPIO1, analog)</td><td>3V3</td></tr>
+        <tr><td>NeoPixel stick, 8 × WS2812B (330 Ω on data, 470 µF across supply)</td><td><code>D1</code> (GPIO2)</td><td>5V</td></tr>
+        <tr><td>Coin motor via 2N2222A + 1N4148 flyback</td><td><code>D2</code> (GPIO3) through 1 kΩ</td><td>3V3</td></tr>
+        <tr><td>MAX30102 pulse sensor</td><td><code>D4</code> SDA · <code>D5</code> SCL · <code>D3</code> INT</td><td>3V3</td></tr>
+        <tr><td>Piezo buzzer (100 Ω series)</td><td><code>D8</code> (GPIO7)</td><td>–</td></tr>
+        <tr><td>10 kΩ potentiometer</td><td><code>D9</code> (GPIO8, analog)</td><td>3V3</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="head"><h2>Downloads</h2><p>Worksheets and cards for the workshop, ready to print.</p></div>
+    <div class="downloads">
+      <a class="dl" href="./workshop/circulation-sketch-sheets-A3.pdf"><span class="kind">PDF · A3 landscape</span><b>Sketch sheets</b><span>Care Memory Sketch Sheet, Glowing Cup Design Sheet and a drawing sheet. Print one set per participant.</span></a>
+      <a class="dl" href="./workshop/circulation-three-hands-sheet-A2.pdf"><span class="kind">PDF · A2, laminate</span><b>Three Hands group sheet</b><span>One part facing each of three people, a shared centre. Laminate and use dry-erase markers.</span></a>
+      <a class="dl" href="./workshop/circulation-workshop-cards-A4.pdf"><span class="kind">PDF · A4</span><b>Workshop cards</b><span>Finger-to-element cards, prompt cards and the table card.</span></a>
+      <a class="dl" href="./toolkit/circulation-toolkit-box-and-packing-cards.pdf"><span class="kind">PDF · A4</span><b>Box design and packing cards</b><span>The participant box, and twelve packing cards for checking each box after a workshop.</span></a>
+      <a class="dl" href="https://github.com/binyoun/circulation/tree/main/hardware/workshop-kit"><span class="kind">GitHub</span><b>Kit code and guide</b><span>Arduino sketch, preparation guide and the Flux.ai schematic spec.</span></a>
+      <a class="dl" href="./design.html"><span class="kind">Page</span><b>Sea table design</b><span>The installation the toolkit comes from: drawings and live simulator.</span></a>
+    </div>
+  </section>
+
+  <footer><span>Circulation: Cupping, Colour, and Collective Sensing · Bin Youn · RMIT University Vietnam</span><span>Contact: bin.youn@rmit.edu.vn</span></footer>
+</div>
+
+<script>
+(() => {
+  const MODS = [
+    { name: 'Participant kit', where: '× 12 numbered boxes', items: [
+      ['Seeed XIAO ESP32-S3 (Wi-Fi), headers soldered', 1], ['Force-sensitive resistor, about 12 mm', 1], ['NeoPixel stick, 8 LEDs', 1],
+      ['Pulse sensor, MAX30102', 1], ['Coin vibration motor + transistor + diode', 1], ['Piezo buzzer, potentiometer, resistors', '1 set'],
+      ['Half breadboard + jumper wires', '1 set'], ['USB-C cable', 1], ['Compartment box + numbered lid label', 1]] },
+    { name: 'Facilitator case', where: 'power, network, repair', items: [
+      ['Travel Wi-Fi router (own network for the kits)', 1], ['USB power banks', 6], ['Spare parts: FSRs, LED strip, headers, wires, resistors', '1 box'],
+      ['Multimeter', 1], ['Extension reel + travel adapters', 1], ['Multi-port USB charging station', 1], ['Soldering station + tips', 1]] },
+    { name: 'Making and care', where: 'for the making station', items: [
+      ['Cupping cups, assorted sizes, no pumps', '2 sets'], ['Clay tool sets', 12], ['Work mats', 12], ['Laminated finger cards and table cards', '1 set'],
+      ['Three Hands group sheets, A2, laminated', 4], ['Dry-erase markers in the five element colours + cloths', '1 set']] },
+    { name: 'Cases and labels', where: 'two cases carry everything', items: [
+      ['Stackable rugged storage case with foam', 2], ['Printed lid labels + QR guide cards', '1 set']] },
+  ];
+  document.getElementById('mods').innerHTML = MODS.map(m =>
+    `<div class="mod"><h3>${m.name}</h3><span class="where">${m.where}</span><table><thead><tr><th>Item</th><th style="text-align:right">Qty</th></tr></thead><tbody>${m.items.map(([n, q]) => `<tr><td>${n}</td><td class="n">${q}</td></tr>`).join('')}</tbody></table></div>`).join('');
+
+  // participant box, top view, and the lid label
+  const S = 3.6, ox = 16, oy = 46, INK = 'var(--ink)', SOFT = 'var(--soft)';
+  const R = (x, y, w, h, a, b) => `<rect x="${ox + x * S}" y="${oy + y * S}" width="${w * S}" height="${h * S}" rx="4" fill="none" stroke="${INK}" stroke-width="1.2"/><text x="${ox + (x + w / 2) * S}" y="${oy + (y + h / 2) * S - (b ? 3 : -4)}" text-anchor="middle" font-size="12.5" font-weight="600" fill="${INK}" font-family="IBM Plex Sans, sans-serif">${a}</text>` + (b ? `<text x="${ox + (x + w / 2) * S}" y="${oy + (y + h / 2) * S + 13}" text-anchor="middle" font-size="11" fill="${SOFT}" font-family="IBM Plex Sans, sans-serif">${b}</text>` : '');
+  let s = `<svg viewBox="0 0 760 400" role="img" aria-label="Top view of one participant box and its lid label">`;
+  s += `<text x="${ox}" y="28" font-size="15" font-weight="700" fill="${INK}" font-family="Gowun Batang, Georgia, serif">One box, everything plugged in</text>`;
+  s += `<rect x="${ox}" y="${oy}" width="${130 * S}" height="${84.5 * S}" rx="8" fill="var(--accent-wash)" stroke="${INK}" stroke-width="1.6"/>`;
+  s += R(4, 4, 34, 22, 'XIAO ESP32-S3', 'Wi-Fi board') + R(42, 4, 26, 22, 'FSR', 'press') + R(72, 4, 26, 22, 'MAX30102', 'pulse') + R(102, 4, 24, 22, 'Motor', 'buzz');
+  s += R(4, 30, 64, 30, 'Half breadboard', '+ jumper wires') + R(72, 30, 54, 13, 'NeoPixel stick', '') + R(72, 47, 26, 13, 'Buzzer, pot', '') + R(102, 47, 24, 13, 'Resistors', '');
+  s += R(4, 64, 122, 16, 'USB-C cable, coiled', '');
+  s += `<text x="${ox}" y="${oy + 84.5 * S + 24}" font-size="11.5" fill="${SOFT}" font-family="IBM Plex Mono, monospace">compartments not to scale · box about 20 × 13 × 5 cm</text>`;
+  const lx = ox + 130 * S + 30, ly = oy, lw = 760 - lx - 16;
+  s += `<rect x="${lx}" y="${ly}" width="${lw}" height="200" rx="8" fill="var(--sheet)" stroke="${INK}" stroke-width="1.4"/>`;
+  s += `<text x="${lx + 14}" y="${ly + 26}" font-size="10.5" letter-spacing="1.4" fill="${SOFT}" font-family="IBM Plex Mono, monospace">LID LABEL</text>`;
+  s += `<text x="${lx + 14}" y="${ly + 60}" font-size="20" font-weight="700" fill="${INK}" font-family="Gowun Batang, Georgia, serif">Circulation</text>`;
+  s += `<text x="${lx + 14}" y="${ly + 102}" font-size="36" fill="${INK}" font-family="IBM Plex Mono, monospace">KIT 07</text>`;
+  ['var(--wood)', 'var(--fire)', 'var(--earth)', 'var(--metal)', 'var(--water)'].forEach((c, i) => { s += `<rect x="${lx + 14 + i * 20}" y="${ly + 118}" width="16" height="7" rx="2" fill="${c}"/>`; });
+  s += `<rect x="${lx + lw - 70}" y="${ly + 12}" width="56" height="56" rx="4" fill="none" stroke="${INK}" stroke-dasharray="4 3"/><text x="${lx + lw - 42}" y="${ly + 44}" text-anchor="middle" font-size="10" fill="${SOFT}" font-family="IBM Plex Mono, monospace">QR</text>`;
+  s += `<text x="${lx + 14}" y="${ly + 154}" font-size="11" fill="${SOFT}" font-family="IBM Plex Sans, sans-serif">Circulation project · RMIT Vietnam</text>`;
+  s += `<text x="${lx + 14}" y="${ly + 172}" font-size="11" fill="${SOFT}" font-family="IBM Plex Sans, sans-serif">Return complete · parts list inside</text>`;
+  s += `</svg>`;
+  document.getElementById('box').innerHTML = s;
+})();
+</script>
+</body>
+</html>

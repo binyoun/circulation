@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circulation Three Hands Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* A2 landscape group sheet for three people, laminated and written on with dry-erase markers.
+   The circle mirrors the sea table: one part facing each person, a shared centre. Prints at A3 when scaled to fit. */
+@page { size: 594mm 420mm; margin: 0; }
+html, body { margin: 0; background: #fff; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+svg { display: block; width: 594mm; height: 420mm; }
+@media screen { body { background: #ddd; padding: 16px; } svg { width: 100%; height: auto; max-width: 1400px; margin: 0 auto; background: #fff; } }
+</style>
+</head>
+<body>
+<svg id="sheet" viewBox="0 0 594 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three Hands Sheet: a circle with one part for each of three people and a shared centre"></svg>
+<script>
+(() => {
+  const C = [297, 214], R = 186, RI = 60;
+  const SANS = 'IBM Plex Sans, Helvetica, Arial, sans-serif', MONO = 'IBM Plex Mono, monospace', SERIF = 'Gowun Batang, Georgia, serif';
+  const INK = '#111', SOFT = '#666', FAINT = '#bbb';
+  const t = (x, y, s, o = {}) => `<text x="${x}" y="${y}" font-family="${o.f || SANS}" font-size="${o.sz || 4}" fill="${o.c || INK}" text-anchor="${o.a || 'middle'}" font-weight="${o.w || 400}"${o.ls ? ` letter-spacing="${o.ls}"` : ''}>${s}</text>`;
+  const ln = (x1, y1, x2, y2, c = INK, w = .35, d = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}"${d ? ` stroke-dasharray="${d}"` : ''}/>`;
+  const ELEMENTS = [['Wood', 'thumb'], ['Fire', 'index'], ['Earth', 'middle'], ['Metal', 'ring'], ['Water', 'little']];
+
+  // one person's part, drawn facing the bottom edge, below the centre (local origin = C)
+  function part() {
+    let g = '';
+    g += t(0, 76, 'NAME OR ID', { sz: 3, c: SOFT, ls: .6 });
+    g += ln(-48, 86, 48, 86);
+    g += t(0, 97, 'My colour (circle one)', { sz: 3.4, c: SOFT });
+    ELEMENTS.forEach(([name, finger], i) => {
+      const x = -48 + i * 24;
+      g += `<circle cx="${x}" cy="104" r="3.6" fill="none" stroke="${INK}" stroke-width=".4"/>`;
+      g += t(x, 113.5, name, { sz: 3.3, w: 500 });
+      g += t(x, 118, finger, { sz: 2.6, c: SOFT });
+    });
+    g += t(-64, 129, 'Which finger led?', { sz: 3.6, a: 'start', w: 500 });
+    g += ln(-64, 135, 64, 135, FAINT, .3);
+    g += t(-58, 145, 'What did you notice about the other two?', { sz: 3.6, a: 'start', w: 500 });
+    g += ln(-56, 151, 56, 151, FAINT, .3);
+    g += ln(-50, 159, 50, 159, FAINT, .3);
+    g += `<rect x="-40" y="163" width="80" height="17" rx="2" fill="none" stroke="${FAINT}" stroke-width=".35" stroke-dasharray="1.5 1.2"/>`;
+    g += t(0, 167.5, 'draw the shape your hand made', { sz: 2.7, c: SOFT });
+    return g;
+  }
+
+  let s = '';
+  // outer circle, centre circle, dividers
+  s += `<circle cx="${C[0]}" cy="${C[1]}" r="${R}" fill="none" stroke="${INK}" stroke-width=".7"/>`;
+  s += `<circle cx="${C[0]}" cy="${C[1]}" r="${RI}" fill="none" stroke="${INK}" stroke-width=".7"/>`;
+  [30, 150, 270].forEach(a => {
+    const r = a * Math.PI / 180;
+    s += ln(C[0] + Math.cos(r) * RI, C[1] + Math.sin(r) * RI, C[0] + Math.cos(r) * R, C[1] + Math.sin(r) * R, INK, .5);
+  });
+  // three parts, each turned to face the person sitting at that side
+  [0, 120, 240].forEach(rot => { s += `<g transform="translate(${C[0]} ${C[1]}) rotate(${rot})">${part()}</g>`; });
+  // the shared centre: the prompt runs round the inside of the circle three times, so everyone can read it
+  s += `<defs><path id="ring" d="M ${C[0]} ${C[1] + 52} a 52 52 0 1 1 0.01 0"/></defs>`;
+  s += `<text font-family="${MONO}" font-size="3.4" fill="${SOFT}" letter-spacing=".5"><textPath href="#ring" startOffset="2%">WHAT MET IN THE MIDDLE? · </textPath></text>`;
+  s += `<text font-family="${MONO}" font-size="3.4" fill="${SOFT}" letter-spacing=".5"><textPath href="#ring" startOffset="35.3%">WHAT MET IN THE MIDDLE? · </textPath></text>`;
+  s += `<text font-family="${MONO}" font-size="3.4" fill="${SOFT}" letter-spacing=".5"><textPath href="#ring" startOffset="68.6%">WHAT MET IN THE MIDDLE? · </textPath></text>`;
+  s += t(C[0], C[1] - 18, 'Together', { f: SERIF, sz: 7, w: 700 });
+  s += t(C[0], C[1] - 9, 'name what the three of you made', { sz: 3, c: SOFT });
+  [0, 9, 18, 27].forEach(dy => { s += ln(C[0] - 36 + (dy > 9 ? 4 : 0), C[1] + 1 + dy, C[0] + 36 - (dy > 9 ? 4 : 0), C[1] + 1 + dy, FAINT, .3); });
+
+  // corners
+  s += t(18, 24, 'Circulation', { f: SERIF, sz: 10, w: 700, a: 'start' });
+  s += t(18, 33, 'THREE HANDS SHEET', { f: MONO, sz: 3.6, c: SOFT, a: 'start', ls: .8 });
+  s += t(576, 22, 'Laminated · dry-erase markers only', { sz: 3.2, c: SOFT, a: 'end' });
+  s += t(576, 28, 'Wipe with the cloth, never with water', { sz: 3.2, c: SOFT, a: 'end' });
+  const steps = ['1. Sit where your part of the circle faces you.', '2. Fill in your own part.', '3. Fill the centre together.', '4. Photograph the sheet, then wipe it clean.'];
+  s += t(18, 370, 'HOW TO USE', { f: MONO, sz: 3.2, c: SOFT, a: 'start', ls: .8 });
+  steps.forEach((x, i) => { s += t(18, 378 + i * 7, x, { sz: 3.6, a: 'start' }); });
+  s += t(500, 392, 'GROUP', { f: MONO, sz: 3.2, c: SOFT, a: 'start', ls: .8 });
+  s += ln(522, 393, 576, 393);
+  s += t(500, 404, 'DATE', { f: MONO, sz: 3.2, c: SOFT, a: 'start', ls: .8 });
+  s += ln(522, 405, 576, 405);
+  document.getElementById('sheet').innerHTML = s;
+})();
+</script>
+</body>
+</html>
