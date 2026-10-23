@@ -72,7 +72,7 @@
     <header>
       <h1>circulation, the manual</h1>
       <p class="sub">cupping, colour, and collective sensing &middot; what every file is and what to do with it</p>
-      <nav><a href="./index.html">the system</a> &middot; <a href="./sim.html">physical computing sim</a> &middot; <a href="./log.html">process log</a></nav>
+      <nav><a href="./system.html">the system</a> &middot; <a href="./sim.html">physical computing sim</a> &middot; <a href="./log.html">process log</a></nav>
     </header>
 
     <p class="lead">One page for the whole build, from simulator tuning to the end of the funded period (30 November 2026). The project does not target an exhibition deadline; the whole window goes into building the machine fully. Read it top to bottom once; after that, jump to the phase you are in.</p>
@@ -131,9 +131,9 @@
     <div class="layer l-site">
       <h4>The site: what you, curators, and the public see</h4>
       <p class="why">Every push to main auto-deploys to <a href="https://circulatorysensing.com/">circulatorysensing.com</a> in about 30 seconds. You never deploy manually.</p>
-      <div class="file"><code>index.html</code><span>the live simulator page: three virtual cups, the flow layer, the room</span></div>
+      <div class="file"><code>circulation/system.html</code><span>the live simulator page: three virtual cups, the flow layer, the room</span></div>
       <div class="file"><code>src/main.ts</code><span>the simulator's code: presence, afterglow marks, light travelling cup to cup, sliders. Tune the interaction here first, hardware second</span></div>
-      <div class="file"><code>src/cupView.ts</code><span>the rendering pieces shared by <code>index.html</code> and <code>sim.html</code>: the cup panel, colour helpers, the flow layer, and the presence/afterglow display state</span></div>
+      <div class="file"><code>src/cupView.ts</code><span>the rendering pieces shared by <code>circulation/system.html</code> and <code>sim.html</code>: the cup panel, colour helpers, the flow layer, and the presence/afterglow display state</span></div>
       <div class="file"><code>sim.html</code> / <code>src/sim.ts</code><span>the physical computing simulation: the same three cups, but a grip and a heart rate pass through simulated FSR/MAX30102 sensor behaviour (noise, calibration, contact dropout) before reaching the engine</span></div>
       <div class="file"><code>src/sensorSim.ts</code><span>the sensor model sim.html runs: mirrors cup.ino's raw ADC, calibration bounds, IR contact threshold, and beat jitter, with fault toggles for a loose palm seal, a fidgeting hand, and an uncalibrated cup</span></div>
       <div class="file"><code>log.html</code><span>the process log. One entry per build week: grant report, paper documentation, and curator-facing story in one file</span></div>
@@ -180,7 +180,7 @@
       <li class="phase" data-n="1">
         <h4>Now, before any parts arrive</h4>
         <ul>
-          <li>Tune the interaction in the <a href="./index.html">simulator</a> until the mapping feels true. The knobs are named constants: element thresholds in <b>fiveElements.ts</b>, sync windows in <b>sync.ts</b>, PRESENCE and MARK_FADE_S in <b>main.ts</b>. Change a value, push, feel it live two minutes later.</li>
+          <li>Tune the interaction in the <a href="./system.html">simulator</a> until the mapping feels true. The knobs are named constants: element thresholds in <b>fiveElements.ts</b>, sync windows in <b>sync.ts</b>, PRESENCE and MARK_FADE_S in <b>main.ts</b>. Change a value, push, feel it live two minutes later.</li>
           <li>Take <b>TECHNICIAN_BRIEF.txt</b> to the technician meeting.</li>
           <li>Buy a real cupping cup set and order the parts list in the brief. Lead times are the schedule risk.</li>
           <li>Hold a cup mouth-down on your palm for a minute; the posture decides the insert design.</li>

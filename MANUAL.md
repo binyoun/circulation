@@ -24,7 +24,7 @@ Rule: if you change the mapping, change it in `src/fiveElements.ts` AND `cup.ino
 - `sim.html` / `src/sim.ts` is the physical computing simulation: the same three-cup stage, but a grip and a heart rate pass through `src/sensorSim.ts` (simulated FSR/MAX30102 sensor behaviour) before reaching the engine, instead of clean sliders. Fault toggles per cup (loose palm seal, fidgeting, never calibrated) rehearse the open questions from `hardware/TECHNICIAN_BRIEF.txt`.
 - `src/sensorSim.ts` is the sensor model: raw ADC counts, FSR calibration bounds, the MAX30102 IR contact threshold and confidence formula, and beat-to-beat jitter, mirroring `cup.ino`'s exact constants so tuning it is tuning the firmware's constants.
 - `log.html` is the process log. Add an entry every week you build something; it is the grant report, the paper's process documentation, and the curator-facing story in one file.
-- `.github/workflows/deploy.yml` deploys automatically: every push to main rebuilds the site at https://circulatorysensing.com/ in about 30 seconds. You never deploy manually.
+- `.github/workflows/deploy.yml` deploys automatically: every push to main rebuilds the site at https://circulatorysensing.com/circulation/ in about 30 seconds. You never deploy manually.
 
 ### The hardware layer
 

@@ -6,11 +6,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './index.html',
-        sim: './sim.html',
-        log: './log.html',
-        manual: './manual.html',
-        design: './design.html',
-        toolkit: './toolkit.html',
+        circulation: './circulation/index.html',
+        system: './circulation/system.html',
+        sim: './circulation/sim.html',
+        log: './circulation/log.html',
+        manual: './circulation/manual.html',
+        design: './circulation/design.html',
+        toolkit: './circulation/toolkit.html',
       },
     },
   },

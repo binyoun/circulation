@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>circulation, the physical computing simulation</title>
+  <style>
+    :root { color-scheme: dark; --ink: #f2efe9; --muted: rgba(242,239,233,0.58); --line: rgba(242,239,233,0.14); --panel: #15130f; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: radial-gradient(ellipse at 50% -10%, #1a1712 0%, #0b0a08 68%); color: var(--ink); }
+    body { font-family: ui-monospace, 'SF Mono', Menlo, monospace; line-height: 1.5; min-height: 100%; }
+    a { color: #d98a4a; }
+    .wrap { max-width: 62rem; margin: 0 auto; padding: 2rem 1.2rem 3rem; }
+    header h1 { font-family: Georgia, serif; font-style: italic; font-weight: 400; font-size: 2rem; margin: 0; }
+    header .sub { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.06em; margin: 0.3rem 0 0; }
+    header nav { margin-top: 0.6rem; font-size: 0.72rem; letter-spacing: 0.06em; }
+    .lead { color: var(--muted); font-size: 0.82rem; max-width: 42rem; margin: 1.2rem 0 1.6rem; }
+
+    #stage { position: relative; }
+    #flow { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+    #cups { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+    .cup { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; }
+    .cup .disc { width: 96px; height: 96px; border-radius: 50%; margin: 0.2rem auto 0.7rem; transition: background 0.15s, box-shadow 0.15s; }
+    .cup .el { text-align: center; }
+    .cup .el .name { font-family: Georgia, serif; font-style: italic; font-size: 1.25rem; }
+    .cup .el .meta { font-size: 0.66rem; color: var(--muted); letter-spacing: 0.04em; }
+    .weights { display: flex; gap: 3px; align-items: flex-end; height: 26px; margin: 0.7rem 0; }
+    .weights .wb { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.15s; }
+    .ctl { display: grid; gap: 0.4rem; margin-top: 0.6rem; }
+    .ctl label { font-size: 0.66rem; color: var(--muted); display: flex; justify-content: space-between; }
+    .ctl input[type=range] { width: 100%; accent-color: #d98a4a; margin: 0; }
+
+    .flts { display: grid; gap: 0.25rem; margin: 0.5rem 0 0.3rem; padding-top: 0.5rem; border-top: 1px dashed var(--line); }
+    .flt { display: flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; color: var(--muted); cursor: pointer; }
+    .flt input { accent-color: #d98a4a; margin: 0; }
+    .diag { font-size: 0.62rem; color: var(--muted); line-height: 1.4; border-top: 1px dashed var(--line); padding-top: 0.5rem; margin-top: 0.3rem; word-break: break-word; }
+
+    #room { margin-top: 1.6rem; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    #room-bar { height: 70px; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+    #room-bar span { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,0,0,0.55); text-shadow: 0 1px 6px rgba(255,255,255,0.25); }
+    #room-meta { display: flex; gap: 1.4rem; padding: 0.7rem 1rem; font-size: 0.72rem; color: var(--muted); flex-wrap: wrap; }
+    #room-meta b { color: var(--ink); font-weight: 600; }
+    .note { font-size: 0.7rem; color: var(--muted); margin-top: 1.4rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>circulation</h1>
+      <p class="sub">cupping, colour, and collective sensing &middot; physical computing simulation</p>
+      <nav><a href="./system.html">the system</a> &middot; <a href="./log.html">process log</a> &middot; <a href="./manual.html">manual</a></nav>
+    </header>
+    <p class="lead">Where <a href="./system.html">the system</a> hands clean numbers straight to the Five Elements engine, this page stands between a body and that engine the way the real cup does: a grip and a heart rate become raw FSR and MAX30102 readings first, noise, calibration, and contact included. The fault toggles rehearse the open questions from the bench brief: a loose palm seal, a fidgeting hand, and firmware never calibrated from a bench pass.</p>
+
+    <div id="stage">
+      <div id="cups"></div>
+      <canvas id="flow"></canvas>
+    </div>
+
+    <div id="room">
+      <div id="room-bar"><span>the room</span></div>
+      <div id="room-meta"></div>
+    </div>
+
+    <p class="note">Grip firmness is the ground truth a hand applies; the FSR reading under it is noisy and calibration-dependent. Heart rate is the ground truth pulse; the MAX30102 only reads it once the IR signal clears a contact threshold, and a loose seal keeps that threshold just out of reach. Watch the diagnostics line under each cup, not just the colour, to see what the firmware is actually working with.</p>
+  </div>
+  <script type="module" src="/src/sim.ts"></script>
+</body>
+</html>
